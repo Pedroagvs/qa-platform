@@ -29,10 +29,10 @@ A plataforma Quality Assurance é um site voltado para a gestão de casos de tes
   
 
 ## Como instalar
-  1 - Realize o donwload e instale o Flutter.
-  2 - Realize o donwload e instale o MySQl.
-  3 - Realize o donwload e instale o Docker.
-  4 - Abra e execute na raiz do projeto 'docker compose up'
-  5 - cd app && flutter build web
-  6 - cd back_end dart run
-  7 - Abra um browser e insira 'http://127.0.0.1:8000/'
+  *  Realize o donwload e instale o Flutter.
+  *  Realize o donwload e instale o MySQl.
+  *  Realize o donwload e instale o Docker.
+  *  Abra e execute na raiz do projeto 'docker compose up'
+  *  cd app && flutter build web
+  *  cd back_end dart run
+  *  Abra um browser e insira 'http://127.0.0.1:8000/'

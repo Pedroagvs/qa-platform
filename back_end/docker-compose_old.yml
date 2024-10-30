@@ -1,0 +1,28 @@
+services:
+
+  database:
+    image: mysql:8.0.33
+    container_name: qa_prime_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'qa_prime'
+      MYSQL_USER: 'primeQA'
+      MYSQL_PASSWORD: 'Prime@123'
+      MYSQL_ROOT_PASSWORD: 'Prime@123'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - './migrations/0001_create_table_funcionalidades.sql:/docker-entrypoint-initdb.d/0001_create_table_funcionalidades.sql'
+      - './migrations/0002_create_table_cargos.sql:/docker-entrypoint-initdb.d/0002_create_table_cargos.sql'
+      - './migrations/0003_create_table_aplicacao.sql:/docker-entrypoint-initdb.d/0003_create_table_aplicacao.sql'
+      - './migrations/0004_create_table_historico_testes.sql:/docker-entrypoint-initdb.d/0004_create_table_historico_testes.sql'
+      - './migrations/0005_create_table_testes.sql:/docker-entrypoint-initdb.d/0005_create_table_testes.sql'
+      - './migrations/0006_create_table_arquivos_testes.sql:/docker-entrypoint-initdb.d/0006_create_table_arquivos_testes.sql'
+      - './migrations/0007_create_table_arquivos_historicos.sql:/docker-entrypoint-initdb.d/0007_create_table_arquivos_historicos.sql'
+      - './migrations/0008_create_table_user.sql:/docker-entrypoint-initdb.d/0008_create_table_user.sql'
+      - './migrations/0010_create_table_user_cargos.sql:/docker-entrypoint-initdb.d/0010_create_table_user_cargos.sql'
+      - './migrations/0009_create_table_cargos_funcionalidades.sql:/docker-entrypoint-initdb.d/0009_create_table_cargos_funcionalidades.sql'
+      - './migrations/0011_insert_common.sql:/docker-entrypoint-initdb.d/0011_insert_common.sql'

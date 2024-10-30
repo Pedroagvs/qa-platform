@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS qa_prime. tb_testes (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+criador VARCHAR(30) NOT NULL,
+responsavel VARCHAR(30) NOT NULL DEFAULT '',
+tester VARCHAR(30) NOT NULL DEFAULT '',
+tag VARCHAR(30) NOT NULL,
+feature VARCHAR(30) NOT NULL,
+descricao TEXT  ,
+passos TEXT  ,
+observacoes TEXT  ,
+devolutiva TEXT ,
+resultadoEsperado TEXT ,
+situacao VARCHAR(30) NOT NULL DEFAULT 'Pendente',
+usuario VARCHAR(30)  NOT NULL DEFAULT '',
+senha VARCHAR(30)  NOT NULL DEFAULT '',
+dataCadastro  DATE DEFAULT (CURRENT_DATE()),
+fechado BOOLEAN DEFAULT false,
+historico_testes_id INT(6) UNSIGNED NOT NULL,
+constraint foreign key (historico_testes_id) references tb_historico(id) ON DELETE CASCADE
+);

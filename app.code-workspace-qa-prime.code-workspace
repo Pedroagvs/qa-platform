@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "app"
+		},
+		{
+			"path": "back_end"
+		}
+	],
+	"settings": {
+		"files.autoSave": "onWindowChange",
+		"editor.codeActionsOnSave": {
+			"source.fixAll": "explicit",
+		}
+	}
+}

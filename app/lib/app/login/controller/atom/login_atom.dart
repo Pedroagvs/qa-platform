@@ -8,11 +8,9 @@ import 'package:quality_assurance_platform/features/login/domain/usecases/interf
 final authUseCase = GetIt.I.get<AuthUseCase>();
 final statusLoginAtom = atom<LoginStatus>(LoginStatus.initial);
 final emailAtom = atom<TextEditingController>(
-  TextEditingController(text: 'pedroagvs@gmail.com'),
+  TextEditingController(),
 );
-
-final passwordAtom =
-    atom<TextEditingController>(TextEditingController(text: 'senha123'));
+final passwordAtom = atom<TextEditingController>(TextEditingController());
 
 final obscureTextAtom = atom<bool>(true);
 

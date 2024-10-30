@@ -24,7 +24,7 @@ class AuthDAO implements AuthGateway {
       JOIN tb_cargos c ON uc.cargo_id = c.id
       JOIN tb_cargo_funcionalidades cf ON c.id = cf.cargo_id
       JOIN tb_funcionalidades f ON cf.funcionalidade_id = f.id
-      WHERE u.email = 'pedroagvs@gmail.com' AND u.senha = MD5('senha123')
+      WHERE u.email = :email AND u.senha = MD5(:senha)
       GROUP BY u.id, c.nome;
       ''',
         {

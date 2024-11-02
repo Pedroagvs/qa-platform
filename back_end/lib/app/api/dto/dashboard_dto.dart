@@ -14,13 +14,14 @@ class DashboardDto {
       aplicacao: json['aplicacao'] ?? '',
       data: {
         int.tryParse(json['dataCadastro'] ?? '0') ?? 0: {
+          'totalTestes': int.tryParse(json['totalTestes'] ?? '0') ?? 0,
           'totalHistoricos': int.tryParse(json['totalHistoricos'] ?? '0') ?? 0,
           'testesFechados': int.tryParse(json['testesFechados'] ?? '0') ?? 0,
           'testesAbertos': int.tryParse(json['testesAbertos'] ?? '0') ?? 0,
           'historicoAbertos':
-              int.tryParse(json['historicoAbertos'] ?? '0') ?? 0,
+              int.tryParse(json['historicosAbertos'] ?? '0') ?? 0,
           'historicoFechados':
-              int.tryParse(json['historicoFechados'] ?? '0') ?? 0,
+              int.tryParse(json['historicosFechados'] ?? '0') ?? 0,
         },
       },
     );

@@ -58,19 +58,20 @@ class _MyAccountWidgetState extends State<MyAccountWidget>
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-              ),
-              height: 100,
-              width: 100,
-              child: Stack(
-                children: [
-                  InkWell(
-                    onTap: homeState.statusHome ==
-                            StatusHome.loadingChangeThumbnail
-                        ? null
-                        : () => updateThumbnailUser(userState?.id ?? 0),
+            child: Stack(
+              children: [
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap:
+                      homeState.statusHome == StatusHome.loadingChangeThumbnail
+                          ? null
+                          : () => updateThumbnailUser(userState?.id ?? 0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    height: 100,
+                    width: 100,
                     child: CircleAvatar(
                       radius: 50,
                       backgroundImage: userState?.thumbnail != null
@@ -78,15 +79,15 @@ class _MyAccountWidgetState extends State<MyAccountWidget>
                           : null,
                     ),
                   ),
-                  const Positioned(
-                    right: 2,
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.orange,
-                    ),
+                ),
+                const Positioned(
+                  right: 2,
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.orange,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Padding(

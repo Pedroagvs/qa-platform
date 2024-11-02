@@ -1,4 +1,4 @@
-USE qa_prime;
+USE qa_platform;
 
 INSERT INTO tb_usuarios_cargos (user_id, cargo_id) VALUES (1, 1); 
 INSERT INTO tb_usuarios_cargos (user_id, cargo_id) VALUES (2, 2); 

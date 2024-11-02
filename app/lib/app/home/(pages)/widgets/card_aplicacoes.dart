@@ -1,6 +1,8 @@
+import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:quality_assurance_platform/app/home/controller/atoms/suites_atom.dart';
+import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/app/routes_atom.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/application_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
@@ -8,7 +10,7 @@ import 'package:quality_assurance_platform/core/common/presentation/widgets/pop_
 import 'package:quality_assurance_platform/routes.g.dart';
 import 'package:routefly/routefly.dart';
 
-class CardAplicacao extends StatelessWidget {
+class CardAplicacao extends StatelessWidget with HookMixin {
   final ApplicationEntity application;
   const CardAplicacao({
     super.key,
@@ -17,6 +19,7 @@ class CardAplicacao extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = useAtomState(userAtom);
     return GestureDetector(
       onTap: () {
         final args = {
@@ -79,43 +82,50 @@ class CardAplicacao extends StatelessWidget {
               height: 2,
             ),
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Flexible(
-                    child: IconButton(
-                      onPressed: () {
-                        updateTitle(application.title);
-                        updatePlatform(application.platform);
-                        updateId(application.id);
-                        updateEditSuite(true);
-                        updateShowFormSuite(true);
-                      },
-                      icon: const Icon(
-                        Icons.edit,
-                        color: Colors.orange,
+              child: Visibility(
+                visible: user?.funcionalidades.contains('Editar') ?? false,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                      child: IconButton(
+                        onPressed: () {
+                          updateTitle(application.title);
+                          updatePlatform(application.platform);
+                          updateId(application.id);
+                          updateEditSuite(true);
+                          updateShowFormSuite(true);
+                        },
+                        icon: const Icon(
+                          Icons.edit,
+                          color: Colors.orange,
+                        ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    child: IconButton(
-                      onPressed: () {
-                        PopUp(
-                          context: context,
-                          onAcceptQuestion: () => deleteSuite(
-                            application.id,
+                    Flexible(
+                      child: Visibility(
+                        visible:
+                            user?.funcionalidades.contains('Deletar') ?? false,
+                        child: IconButton(
+                          onPressed: () {
+                            PopUp(
+                              context: context,
+                              onAcceptQuestion: () => deleteSuite(
+                                application.id,
+                              ),
+                              message:
+                                  'Tem certeza de que deseja prosseguir com a exclusão?',
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
                           ),
-                          message:
-                              'Tem certeza de que deseja prosseguir com a exclusão?',
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

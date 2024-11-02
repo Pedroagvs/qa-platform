@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS qa_prime. tb_arquivos_teste(
+CREATE TABLE IF NOT EXISTS  tb_arquivos_teste(
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 dataCadastro  DATE DEFAULT (CURRENT_DATE()),
 nome VARCHAR(255),

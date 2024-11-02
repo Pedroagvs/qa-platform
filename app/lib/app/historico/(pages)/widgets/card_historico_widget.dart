@@ -2,6 +2,7 @@ import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';
+import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/app/routes_atom.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/historico_entity.dart';
 import 'package:quality_assurance_platform/core/common/presentation/widgets/pop_up_delete.dart';
@@ -26,6 +27,7 @@ class CardHistorico extends StatelessWidget with HookMixin {
   @override
   Widget build(BuildContext context) {
     final page = useAtomState(pageAtom);
+    final user = useAtomState(userAtom);
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 600),
       child: Padding(
@@ -115,16 +117,17 @@ class CardHistorico extends StatelessWidget with HookMixin {
                     child: PopupMenuButton(
                       itemBuilder: (BuildContext context) {
                         return [
-                          PopupMenuItem<String>(
-                            enabled: !historico.closed,
-                            value: 'editar',
-                            child: const ListTile(
-                              leading: Text('Editar'),
-                              trailing: Icon(
-                                Icons.edit,
+                          if (user?.funcionalidades.contains('Editar') ?? false)
+                            PopupMenuItem<String>(
+                              enabled: !historico.closed,
+                              value: 'editar',
+                              child: const ListTile(
+                                leading: Text('Editar'),
+                                trailing: Icon(
+                                  Icons.edit,
+                                ),
                               ),
                             ),
-                          ),
                           PopupMenuItem<String>(
                             enabled: historico.arquivoEntity != null,
                             value: 'download',
@@ -144,27 +147,31 @@ class CardHistorico extends StatelessWidget with HookMixin {
                               ),
                             ),
                           ),
-                          PopupMenuItem<String>(
-                            enabled: !historico.closed,
-                            value: 'finalizar',
-                            child: const ListTile(
-                              leading: Text('Finalizar grupo'),
-                              trailing: Icon(
-                                Icons.check_circle,
+                          if (user?.funcionalidades.contains('Finalizar') ??
+                              false)
+                            PopupMenuItem<String>(
+                              enabled: !historico.closed,
+                              value: 'finalizar',
+                              child: const ListTile(
+                                leading: Text('Finalizar grupo'),
+                                trailing: Icon(
+                                  Icons.check_circle,
+                                ),
                               ),
                             ),
-                          ),
-                          PopupMenuItem<String>(
-                            enabled: !historico.closed,
-                            value: 'deletar',
-                            child: const ListTile(
-                              leading: Text('Deletar'),
-                              trailing: Icon(
-                                Icons.delete,
-                                color: Colors.red,
+                          if (user?.funcionalidades.contains('Deletar') ??
+                              false)
+                            PopupMenuItem<String>(
+                              enabled: !historico.closed,
+                              value: 'deletar',
+                              child: const ListTile(
+                                leading: Text('Deletar'),
+                                trailing: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
                               ),
                             ),
-                          ),
                         ];
                       },
                       onSelected: (String value) {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/app/routes_atom.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/bar_info_testes.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/card_teste.dart';
@@ -64,6 +65,7 @@ class _TestesPageState extends State<TestesPage>
 
   @override
   Widget build(BuildContext context) {
+    final user = useAtomState(userAtom);
     final testeState = useAtomState(selectorTestStateAtom);
     final appBar = AppBar(
       leading: Material(
@@ -274,7 +276,8 @@ class _TestesPageState extends State<TestesPage>
       floatingActionButton: Visibility(
         visible: !testeState.showForm &&
             !testeState.showFormSelectedTest &&
-            !historicClosed,
+            !historicClosed &&
+            (user?.funcionalidades.contains('Criar') ?? false),
         child: FloatingActionButton.extended(
           onPressed: () => updateShowFormtest(true),
           label: const Text('Novo'),

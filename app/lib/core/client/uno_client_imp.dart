@@ -45,10 +45,7 @@ class UnoClientImp implements UnoClient {
       return await uno.get(
         path,
         params: params,
-        onDownloadProgress: (int b, int a) {
-          log(name: 'A', a.toString());
-          log(name: 'B', b.toString());
-        },
+        onDownloadProgress: onProgress,
         timeout: timeOut,
       );
     } on UnoError catch (e, s) {

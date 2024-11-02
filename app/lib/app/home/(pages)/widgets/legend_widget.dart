@@ -7,18 +7,23 @@ class LegendWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            color: color,
-            height: 10,
-            width: 10,
+    return SizedBox(
+      height: 20,
+      width: 170,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              color: color,
+              height: 10,
+              width: 10,
+            ),
           ),
-        ),
-        Text(label),
-      ],
+          Text(label),
+        ],
+      ),
     );
   }
 }

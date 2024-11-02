@@ -45,6 +45,12 @@ class _LoginPageState extends State<LoginPage>
         width: size.width,
         child: Stack(
           children: [
+            Image.asset(
+              'assets/images/background_login.jpg',
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height,
+              fit: BoxFit.cover,
+            ),
             Center(
               child: SingleChildScrollView(
                 child: Card(

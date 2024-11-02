@@ -14,14 +14,7 @@
             "name": "Server",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceFolder}/bin/back_end.dart",
-            "toolArgs": [
-                "--define=host=localhost",
-                "--define=port=3306",
-                "--define=user=primeQA",
-                "--define=password=Prime@123",
-                "--define=db_name=qa_prime"
-            ],
+            "program": "${workspaceFolder}/bin/server.dart",
         },
     ]
 }

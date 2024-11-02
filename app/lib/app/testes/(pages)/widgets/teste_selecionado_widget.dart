@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:asp/asp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/app/testes/controller/atom/teste_atom.dart';
 import 'package:quality_assurance_platform/app/testes/controller/states/testes_state.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
@@ -32,6 +33,7 @@ class _TesteSelecionadoPageState extends State<TesteSelecionadoPage>
 
   @override
   Widget build(BuildContext context) {
+    final user = useAtomState(userAtom);
     final testeState = useAtomState(selectorTestStateAtom);
 
     final controllerDescricao = TextEditingController(
@@ -577,7 +579,8 @@ class _TesteSelecionadoPageState extends State<TesteSelecionadoPage>
                   ),
                 ),
                 Visibility(
-                  visible: !testeState.selectedTest.closed,
+                  visible: !testeState.selectedTest.closed &&
+                      (user?.funcionalidades.contains('Editar') ?? false),
                   child: ElevatedButton.icon(
                     onPressed: () {
                       if (testeState.isEditing) {
@@ -613,8 +616,9 @@ class _TesteSelecionadoPageState extends State<TesteSelecionadoPage>
                   ),
                 ),
                 Visibility(
-                  visible:
-                      !testeState.selectedTest.closed && !testeState.isEditing,
+                  visible: !testeState.selectedTest.closed &&
+                      !testeState.isEditing &&
+                      (user?.funcionalidades.contains('Finalizar') ?? false),
                   child: ElevatedButton(
                     style: const ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(Colors.green),
@@ -638,8 +642,9 @@ class _TesteSelecionadoPageState extends State<TesteSelecionadoPage>
                   ),
                 ),
                 Visibility(
-                  visible:
-                      !testeState.isEditing && !testeState.selectedTest.closed,
+                  visible: !testeState.isEditing &&
+                      !testeState.selectedTest.closed &&
+                      (user?.funcionalidades.contains('Deletar') ?? false),
                   child: ElevatedButton(
                     onPressed: () => PopUp(
                       context: context,

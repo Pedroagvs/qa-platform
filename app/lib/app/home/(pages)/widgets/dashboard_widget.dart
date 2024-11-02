@@ -30,148 +30,232 @@ class _DashboardWidgetState extends State<DashboardWidget> with HookStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final availableHeight = MediaQuery.of(context).size.height -
-        (MediaQuery.of(context).padding.top +
-            kToolbarHeight +
-            AppBar().preferredSize.height);
+    final availableHeight =
+        MediaQuery.of(context).size.height - (AppBar().preferredSize.height);
     final dashboardState = useAtomState(stateDahboard);
 
-    final dotshistoricoAbertos = <FlSpot>[];
-    final dotshistoricoFechados = <FlSpot>[];
-    final dotstestesAbertos = <FlSpot>[];
-    final dotstestesFechados = <FlSpot>[];
-    final dotstotalHistoricos = <FlSpot>[];
+    final dotsHistoricoAbertos = <FlSpot>[];
+    final dotsHistoricoFechados = <FlSpot>[];
+    final dotsTestesAbertos = <FlSpot>[];
+    final dotsTestesFechados = <FlSpot>[];
+    final dotsTotalHistoricos = <FlSpot>[];
+    final dotsTotalTestes = <FlSpot>[];
     for (final dash in dashboardState.dashboardData) {
       dash.data.forEach((date, data) {
         data.forEach((tipo, value) {
           if (tipo == 'historicoAbertos') {
-            dotshistoricoAbertos.add(FlSpot(date.toDouble(), value.toDouble()));
+            dotsHistoricoAbertos.add(FlSpot(date.toDouble(), value.toDouble()));
           }
           if (tipo == 'historicoFechados') {
-            dotshistoricoFechados
+            dotsHistoricoFechados
                 .add(FlSpot(date.toDouble(), value.toDouble()));
           }
           if (tipo == 'testesFechados') {
-            dotstestesFechados.add(FlSpot(date.toDouble(), value.toDouble()));
+            dotsTestesFechados.add(FlSpot(date.toDouble(), value.toDouble()));
           }
           if (tipo == 'testesAbertos') {
-            dotstestesAbertos.add(FlSpot(date.toDouble(), value.toDouble()));
+            dotsTestesAbertos.add(FlSpot(date.toDouble(), value.toDouble()));
           }
           if (tipo == 'totalHistoricos') {
-            dotstotalHistoricos.add(FlSpot(date.toDouble(), value.toDouble()));
+            dotsTotalHistoricos.add(FlSpot(date.toDouble(), value.toDouble()));
+          }
+          if (tipo == 'totalTestes') {
+            dotsTotalTestes.add(FlSpot(date.toDouble(), value.toDouble()));
           }
         });
       });
     }
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: SizedBox(
-        height: availableHeight,
-        width: MediaQuery.sizeOf(context).width,
+    return SizedBox(
+      height: availableHeight,
+      width: MediaQuery.sizeOf(context).width,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Wrap(
+          alignment: WrapAlignment.center,
           spacing: 20,
           runSpacing: 20,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                OutlinedButton.icon(
-                  icon: const Icon(
-                    Icons.calendar_month_outlined,
-                  ),
-                  label: const Text('Selecionar data'),
-                  onPressed: () async {
-                    final dates = await showCalendarDatePicker2Dialog(
-                      context: context,
-                      config: CalendarDatePicker2WithActionButtonsConfig(
-                        calendarType: CalendarDatePicker2Type.range,
-                        firstDate:
-                            DateTime.now().subtract(const Duration(days: 365)),
-                        lastDate: DateTime.now(),
-                      ),
-                      dialogSize: Size(
-                        MediaQuery.sizeOf(context).width * 0.5,
-                        availableHeight * 0.2,
-                      ),
-                    );
-                    if (dates != null) {
-                      updateFinalDate(
-                        dateFormat.format(dates.last!),
-                      );
-                      updateInitialDate(
-                        dateFormat.format(dates.first!),
-                      );
-                      getDashboard(
-                        dashboardState.initialDate,
-                        dashboardState.finalDate,
-                      );
-                    }
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    '${dashboardState.initialDate} - ${dashboardState.finalDate}',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                LineChartWidget(
-                  dotshistoricoAbertos: dotshistoricoAbertos,
-                  dotshistoricoFechados: dotshistoricoFechados,
-                  dotstestesFechados: dotstestesFechados,
-                  dotstestesAbertos: dotstestesAbertos,
-                  dotstotalHistoricos: dotstotalHistoricos,
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                '${dashboardState.initialDate} á ${dashboardState.finalDate}',
+                textAlign: TextAlign.center,
+              ),
             ),
-            Row(
+            ElevatedButton.icon(
+              icon: const Icon(
+                Icons.calendar_month_outlined,
+              ),
+              label: const Text('Filtrar'),
+              onPressed: () async {
+                final dates = await showCalendarDatePicker2Dialog(
+                  context: context,
+                  config: CalendarDatePicker2WithActionButtonsConfig(
+                    calendarType: CalendarDatePicker2Type.range,
+                    firstDate:
+                        DateTime.now().subtract(const Duration(days: 365)),
+                    lastDate: DateTime.now(),
+                  ),
+                  dialogSize: Size(
+                    MediaQuery.sizeOf(context).width * 0.5,
+                    availableHeight * 0.2,
+                  ),
+                );
+                if (dates != null) {
+                  updateFinalDate(
+                    dateFormat.format(dates.last!),
+                  );
+                  updateInitialDate(
+                    dateFormat.format(dates.first!),
+                  );
+                  getDashboard(
+                    dashboardState.initialDate,
+                    dashboardState.finalDate,
+                  );
+                }
+              },
+            ),
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.5,
+              width: MediaQuery.sizeOf(context).width * 0.9,
+              child: Card(
+                elevation: 10,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: LineChartWidget(
+                    dotsTotalHistoricos: dotsTotalHistoricos,
+                    dotsTotalTestes: dotsTotalTestes,
+                  ),
+                ),
+              ),
+            ),
+            Wrap(
               children: [
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.3,
-                  height: MediaQuery.sizeOf(context).height * 0.2,
-                  child: PieChart(
-                    PieChartData(
-                      sections: [
-                        PieChartSectionData(
-                          color: Colors.blue,
-                          value: dotstestesAbertos.fold<double>(
-                            0,
-                            (e, k) => e + k.y,
+                Container(
+                  constraints:
+                      const BoxConstraints(minWidth: 400, minHeight: 220),
+                  child: Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Wrap(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Testes'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: SizedBox(
+                                  width: 250,
+                                  height: 160,
+                                  child: PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.blue,
+                                          value: dotsTestesAbertos.fold<double>(
+                                            0,
+                                            (e, k) => e + k.y,
+                                          ),
+                                        ),
+                                        PieChartSectionData(
+                                          color: Colors.orange,
+                                          value:
+                                              dotsTestesFechados.fold<double>(
+                                            0,
+                                            (e, k) => e + k.y,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        PieChartSectionData(
-                          color: Colors.orange,
-                          value: dotstestesFechados.fold<double>(
-                            0,
-                            (e, k) => e + k.y,
+                          const Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              LegendWidget(
+                                color: Colors.orange,
+                                label: 'Testes fechados',
+                              ),
+                              LegendWidget(
+                                color: Colors.blue,
+                                label: 'Testes abertos',
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.3,
-                  height: MediaQuery.sizeOf(context).height * 0.2,
-                  child: PieChart(
-                    PieChartData(
-                      sections: [
-                        PieChartSectionData(
-                          color: Colors.red,
-                          value: dotshistoricoAbertos.fold<double>(
-                            0,
-                            (e, k) => e + k.y,
+                Container(
+                  constraints:
+                      const BoxConstraints(minWidth: 400, minHeight: 220),
+                  child: Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Wrap(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('Históricos'),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                child: SizedBox(
+                                  width: 250,
+                                  height: 160,
+                                  child: PieChart(
+                                    PieChartData(
+                                      sections: [
+                                        PieChartSectionData(
+                                          color: Colors.red,
+                                          value:
+                                              dotsHistoricoAbertos.fold<double>(
+                                            0,
+                                            (e, k) => e + k.y,
+                                          ),
+                                        ),
+                                        PieChartSectionData(
+                                          color: Colors.green,
+                                          value: dotsHistoricoFechados
+                                              .fold<double>(
+                                            0,
+                                            (e, k) => e + k.y,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        PieChartSectionData(
-                          color: Colors.green,
-                          value: dotshistoricoFechados.fold<double>(
-                            0,
-                            (e, k) => e + k.y,
+                          const Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              LegendWidget(
+                                color: Colors.red,
+                                label: 'Históricos abertos',
+                              ),
+                              LegendWidget(
+                                color: Colors.green,
+                                label: 'Históricos fechados',
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

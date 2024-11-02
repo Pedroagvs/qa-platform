@@ -6,6 +6,7 @@ import 'package:quality_assurance_platform/app/historico/(pages)/widgets/card_hi
 import 'package:quality_assurance_platform/app/historico/(pages)/widgets/form_historic_widget.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/states/historico_state.dart';
+import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/app/routes_atom.dart';
 import 'package:quality_assurance_platform/core/functions/show_message.dart';
 import 'package:quality_assurance_platform/features/historico/data/dto/historico_dto.dart';
@@ -48,6 +49,7 @@ class _HistoricoPageState extends State<HistoricoPage>
 
   @override
   Widget build(BuildContext context) {
+    final user = useAtomState(userAtom);
     final page = useAtomState(pageAtom);
     final historicState = useAtomState(historicStateAtom);
     final showFormState = useAtomState(showFormHistoricAtom);
@@ -265,7 +267,8 @@ class _HistoricoPageState extends State<HistoricoPage>
               ),
             ),
       floatingActionButton: Visibility(
-        visible: !showFormState,
+        visible: !showFormState &&
+            (user?.funcionalidades.contains('Criar') ?? false),
         child: FloatingActionButton.extended(
           onPressed: () {
             updateHistoricGeneric(HistoricoDto.empty());

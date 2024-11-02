@@ -38,8 +38,8 @@ class RegisterDAO implements RegisterGateway {
           tb_usuarios_cargos
             (user_id,cargo_id)
           SELECT
-            (SELECT id FROM qa_prime.tb_user WHERE id = :idNewUser) as user_id,
-            (SELECT id FROM qa_prime.tb_cargos WHERE nome = :cargo) as cargo_id;
+            (SELECT id FROM tb_user WHERE id = :idNewUser) as user_id,
+            (SELECT id FROM tb_cargos WHERE nome = :cargo) as cargo_id;
         ''',
           {
             'idNewUser': idNewUser,

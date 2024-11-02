@@ -54,9 +54,9 @@ class MySQl implements Connection {
     _mySqlConnection = MySQLConnectionPool(
       host: 'localhost',
       port: 3306,
-      userName: 'primeQA',
-      password: 'Prime@123',
-      databaseName: 'qa_prime',
+      userName: 'platformQA',
+      password: 'platform@123',
+      databaseName: 'qa_platform',
       maxConnections: 50,
     );
   }

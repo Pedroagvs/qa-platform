@@ -312,7 +312,7 @@ class HistoricoDAO implements HistoricGateway {
           SELECT CASE 
           WHEN fechado = 0 THEN :Abertos ELSE :Fechados END AS Status,
           COUNT(*) AS QtdTickets
-            FROM  qa_prime.tb_testes
+            FROM  tb_testes
             WHERE historico_testes_id = :idHistorico 
             GROUP BY Status
           ''', {

@@ -49,7 +49,6 @@ class _MyAppState extends State<MyApp> with HookStateMixin, MessageToast {
   @override
   Widget build(BuildContext context) {
     final theme = useAtomState(themeAtom);
-
     final themeApp =
         MaterialTheme(createTextTheme(context, 'Nunito Sans', 'Montserrat'));
 
@@ -60,7 +59,6 @@ class _MyAppState extends State<MyApp> with HookStateMixin, MessageToast {
           !routeInformation.uri.path.contains('/login')) {
         return routeInformation.redirect(Uri.parse(routePaths.login));
       }
-
       return routeInformation;
     }
 
@@ -73,7 +71,6 @@ class _MyAppState extends State<MyApp> with HookStateMixin, MessageToast {
       },
       onPointerDown: (event) {
         if (!(Routefly.currentUri.path.compareTo('/login') == 0)) {
-          log(event.toString());
           if (timer != null) {
             timer?.cancel();
             timer = null;

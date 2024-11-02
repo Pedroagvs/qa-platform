@@ -4,28 +4,23 @@ import 'package:intl/intl.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/legend_widget.dart';
 
 class LineChartWidget extends StatelessWidget {
-  final List<FlSpot> dotshistoricoAbertos;
-  final List<FlSpot> dotshistoricoFechados;
-  final List<FlSpot> dotstestesFechados;
-  final List<FlSpot> dotstestesAbertos;
-  final List<FlSpot> dotstotalHistoricos;
+  final List<FlSpot> dotsTotalTestes;
+  final List<FlSpot> dotsTotalHistoricos;
   const LineChartWidget({
     super.key,
-    required this.dotshistoricoAbertos,
-    required this.dotshistoricoFechados,
-    required this.dotstestesFechados,
-    required this.dotstestesAbertos,
-    required this.dotstotalHistoricos,
+    required this.dotsTotalTestes,
+    required this.dotsTotalHistoricos,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      alignment: WrapAlignment.spaceAround,
       children: [
+        const Text('Acompanhamento'),
         SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.2,
-          width: MediaQuery.sizeOf(context).width * 0.5,
+          height: MediaQuery.sizeOf(context).height * 0.4,
+          width: MediaQuery.sizeOf(context).width * 0.9,
           child: LineChart(
             LineChartData(
               titlesData: FlTitlesData(
@@ -49,49 +44,31 @@ class LineChartWidget extends StatelessWidget {
               ),
               lineBarsData: [
                 LineChartBarData(
-                  spots: dotshistoricoAbertos,
-                  color: Colors.red,
+                  spots: dotsTotalHistoricos,
+                  color: Colors.purple,
                   isCurved: true,
                 ),
                 LineChartBarData(
-                  spots: dotshistoricoFechados,
-                  color: Colors.green,
-                ),
-                LineChartBarData(
-                  spots: dotstestesFechados,
-                  color: Colors.orange,
-                ),
-                LineChartBarData(
-                  spots: dotstestesAbertos,
-                  color: Colors.blue,
-                ),
-                LineChartBarData(
-                  spots: dotstotalHistoricos,
-                  color: Colors.pink,
+                  spots: dotsTotalTestes,
+                  color: Colors.yellow,
                 ),
               ],
             ),
           ),
         ),
-        const LegendWidget(
-          color: Colors.red,
-          label: 'Históricos abertos',
-        ),
-        const LegendWidget(
-          color: Colors.green,
-          label: 'Históricos fechados',
-        ),
-        const LegendWidget(
-          color: Colors.orange,
-          label: 'Testes fechados',
-        ),
-        const LegendWidget(
-          color: Colors.blue,
-          label: 'Testes abertos',
-        ),
-        const LegendWidget(
-          color: Colors.pink,
-          label: 'Total de históricos',
+        const Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            LegendWidget(
+              color: Colors.yellow,
+              label: 'Total de testes',
+            ),
+            LegendWidget(
+              color: Colors.purple,
+              label: 'Total de históricos',
+            ),
+          ],
         ),
       ],
     );

@@ -23,13 +23,13 @@ class CardAplicacao extends StatelessWidget with HookMixin {
     return GestureDetector(
       onTap: () {
         final args = {
-          'idApplication': application.id,
-          'titleApplication': application.title,
+          'title': application.title,
         };
-        final path = routePaths.historico;
-        updateRoutes(path, args);
+        updateArgs('h_${application.id}', args);
         Routefly.navigate(
-          path,
+          routePaths.historico.$idApplication.changes({
+            'idApplication': application.id.toString(),
+          }),
           arguments: args,
         );
       },

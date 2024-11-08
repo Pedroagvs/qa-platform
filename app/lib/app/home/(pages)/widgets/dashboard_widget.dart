@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/legend_widget.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/line_chart_widget.dart';
 import 'package:quality_assurance_platform/app/home/controller/atoms/dashboard_atom.dart';
+import 'package:quality_assurance_platform/app/home/controller/states/dashboard_state.dart';
 
 class DashboardWidget extends StatefulWidget {
   const DashboardWidget({super.key});
@@ -116,150 +117,157 @@ class _DashboardWidgetState extends State<DashboardWidget> with HookStateMixin {
                 }
               },
             ),
-            SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.5,
-              width: MediaQuery.sizeOf(context).width * 0.9,
-              child: Card(
-                elevation: 10,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: LineChartWidget(
-                    dotsTotalHistoricos: dotsTotalHistoricos,
-                    dotsTotalTestes: dotsTotalTestes,
+            Visibility(
+              visible: dashboardState.statusDashbord != StatusDashbord.loading,
+              child: SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.5,
+                width: MediaQuery.sizeOf(context).width * 0.9,
+                child: Card(
+                  elevation: 10,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: LineChartWidget(
+                      dotsTotalHistoricos: dotsTotalHistoricos,
+                      dotsTotalTestes: dotsTotalTestes,
+                    ),
                   ),
                 ),
               ),
             ),
-            Wrap(
-              children: [
-                Container(
-                  constraints:
-                      const BoxConstraints(minWidth: 400, minHeight: 220),
-                  child: Card(
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Wrap(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Testes'),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: SizedBox(
-                                  width: 250,
-                                  height: 160,
-                                  child: PieChart(
-                                    PieChartData(
-                                      sections: [
-                                        PieChartSectionData(
-                                          color: Colors.blue,
-                                          value: dotsTestesAbertos.fold<double>(
-                                            0,
-                                            (e, k) => e + k.y,
+            Visibility(
+              visible: dashboardState.statusDashbord != StatusDashbord.loading,
+              child: Wrap(
+                children: [
+                  Container(
+                    constraints:
+                        const BoxConstraints(minWidth: 400, minHeight: 220),
+                    child: Card(
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Wrap(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Testes'),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: SizedBox(
+                                    width: 250,
+                                    height: 160,
+                                    child: PieChart(
+                                      PieChartData(
+                                        sections: [
+                                          PieChartSectionData(
+                                            color: Colors.blue,
+                                            value:
+                                                dotsTestesAbertos.fold<double>(
+                                              0,
+                                              (e, k) => e + k.y,
+                                            ),
                                           ),
-                                        ),
-                                        PieChartSectionData(
-                                          color: Colors.orange,
-                                          value:
-                                              dotsTestesFechados.fold<double>(
-                                            0,
-                                            (e, k) => e + k.y,
+                                          PieChartSectionData(
+                                            color: Colors.orange,
+                                            value:
+                                                dotsTestesFechados.fold<double>(
+                                              0,
+                                              (e, k) => e + k.y,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              LegendWidget(
-                                color: Colors.orange,
-                                label: 'Testes fechados',
-                              ),
-                              LegendWidget(
-                                color: Colors.blue,
-                                label: 'Testes abertos',
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                            const Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LegendWidget(
+                                  color: Colors.orange,
+                                  label: 'Testes fechados',
+                                ),
+                                LegendWidget(
+                                  color: Colors.blue,
+                                  label: 'Testes abertos',
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  constraints:
-                      const BoxConstraints(minWidth: 400, minHeight: 220),
-                  child: Card(
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Wrap(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Históricos'),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: SizedBox(
-                                  width: 250,
-                                  height: 160,
-                                  child: PieChart(
-                                    PieChartData(
-                                      sections: [
-                                        PieChartSectionData(
-                                          color: Colors.red,
-                                          value:
-                                              dotsHistoricoAbertos.fold<double>(
-                                            0,
-                                            (e, k) => e + k.y,
+                  Container(
+                    constraints:
+                        const BoxConstraints(minWidth: 400, minHeight: 220),
+                    child: Card(
+                      elevation: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Wrap(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Históricos'),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: SizedBox(
+                                    width: 250,
+                                    height: 160,
+                                    child: PieChart(
+                                      PieChartData(
+                                        sections: [
+                                          PieChartSectionData(
+                                            color: Colors.red,
+                                            value: dotsHistoricoAbertos
+                                                .fold<double>(
+                                              0,
+                                              (e, k) => e + k.y,
+                                            ),
                                           ),
-                                        ),
-                                        PieChartSectionData(
-                                          color: Colors.green,
-                                          value: dotsHistoricoFechados
-                                              .fold<double>(
-                                            0,
-                                            (e, k) => e + k.y,
+                                          PieChartSectionData(
+                                            color: Colors.green,
+                                            value: dotsHistoricoFechados
+                                                .fold<double>(
+                                              0,
+                                              (e, k) => e + k.y,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              LegendWidget(
-                                color: Colors.red,
-                                label: 'Históricos abertos',
-                              ),
-                              LegendWidget(
-                                color: Colors.green,
-                                label: 'Históricos fechados',
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                            const Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LegendWidget(
+                                  color: Colors.red,
+                                  label: 'Históricos abertos',
+                                ),
+                                LegendWidget(
+                                  color: Colors.green,
+                                  label: 'Históricos fechados',
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

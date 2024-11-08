@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:quality_assurance_platform/app/login/(pages)/widgets/form_create_account_widget.dart';
@@ -25,6 +23,24 @@ class _LoginPageState extends State<LoginPage>
     with Validators, HookStateMixin, SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
 
+  late final AssetImage img;
+  @override
+  void initState() {
+    img = const AssetImage(
+      'assets/images/background_login.jpg',
+    );
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(
+      img,
+      context,
+    );
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final showFormCreateAccountState = useAtomState(showFormCreateAccountAtom);
@@ -45,11 +61,11 @@ class _LoginPageState extends State<LoginPage>
         width: size.width,
         child: Stack(
           children: [
-            Image.asset(
-              'assets/images/background_login.jpg',
+            Image(
+              image: img,
+              fit: BoxFit.cover,
               width: MediaQuery.sizeOf(context).width,
               height: MediaQuery.sizeOf(context).height,
-              fit: BoxFit.cover,
             ),
             Center(
               child: SingleChildScrollView(

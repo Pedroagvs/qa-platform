@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
@@ -31,20 +30,17 @@ class _HistoricoPageState extends State<HistoricoPage>
   void initState() {
     super.initState();
     final query = Routefly.query;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (query.arguments != null && (query.arguments as Map).isNotEmpty) {
-        final args = Routefly.query.arguments as Map<String, dynamic>;
-        idApplication = args['idApplication'];
-        titleApplication = args['titleApplication'];
-        await getHistorics(0, idApplication);
-      } else {
-        final args = await getArgs();
-        final arg = jsonDecode(args) as Map<String, dynamic>;
-        idApplication = arg['idApplication'] ?? 0;
-        titleApplication = arg['titleApplication'] ?? '';
-        await getHistorics(0, idApplication);
-      }
-    });
+    var args = <String, dynamic>{};
+    if (query['idApplication'] != null) {
+      idApplication = query['idApplication'] ?? '0';
+      getHistorics(pageAtom.state, idApplication);
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (query.arguments == null) {
+          args = await getArgs('h_$idApplication');
+        }
+        titleApplication = query.arguments?['title'] ?? args['title'] ?? '';
+      });
+    }
   }
 
   @override

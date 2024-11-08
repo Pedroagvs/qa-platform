@@ -9,6 +9,7 @@
 # packages, and plugins designed to encourage good coding practices.
 analyzer:
   errors:
+    file_names: ignore
     lines_longer_than_80_chars: ignore
     unnecessary_lambdas: ignore
 include: package:flutterando_analysis/flutter.yaml

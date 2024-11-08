@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
@@ -32,6 +30,7 @@ class _TestesPageState extends State<TestesPage>
   String description = '';
   String source = '';
   int idHistorico = 0;
+  int idApplication = 0;
   bool historicClosed = false;
   @override
   void initState() {
@@ -39,26 +38,22 @@ class _TestesPageState extends State<TestesPage>
     showFormSelectedTest(false);
     updateEditingtest(false);
     final query = Routefly.query;
-    if (query.arguments != null && (query.arguments as Map).isNotEmpty) {
-      title = query.arguments['title'];
-      description = query.arguments['description'];
-      source = query.arguments['source'];
-      idHistorico = query.arguments['idHistorico'];
-      historicClosed = query.arguments['historicClosed'];
-      getTestes(idHistorico);
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await getArgs().then((args) {
-          final arg = jsonDecode(args);
-          title = arg['title'];
-          description = arg['description'];
-          source = arg['source'];
-          idHistorico = arg['idHistorico'];
-          historicClosed = arg['historicClosed'];
-          getTestes(idHistorico);
-        });
-      });
-    }
+    var args = <String, dynamic>{};
+    idHistorico = query['idHistorico'] ?? '0';
+    getTestes(idHistorico);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (query.arguments == null) {
+        args = await getArgs('T_$idHistorico');
+      }
+      title = query.arguments?['title'] ?? args['title'] ?? '';
+      description =
+          query.arguments?['description'] ?? args['description'] ?? '';
+      source = query.arguments?['source'] ?? args['source'] ?? '';
+      idApplication = query['idApplication'] ?? args['idApplication'] ?? 0;
+      historicClosed =
+          query.arguments?['historicClosed'] ?? args['historicClosed'] ?? false;
+    });
 
     super.initState();
   }
@@ -68,16 +63,20 @@ class _TestesPageState extends State<TestesPage>
     final user = useAtomState(userAtom);
     final testeState = useAtomState(selectorTestStateAtom);
     final appBar = AppBar(
-      leading: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          onTap: () => Routefly.navigate(
-            routePaths.historico,
-          ),
-          hoverColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-          child: Container(
-            color: Theme.of(context).colorScheme.surface,
-            child: const Icon(Icons.arrow_circle_left_outlined),
+      leading: Visibility(
+        visible: !testeState.showForm && !testeState.showFormSelectedTest,
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: () => Routefly.navigate(
+              routePaths.historico.$idApplication
+                  .changes({'idApplication': idApplication.toString()}),
+            ),
+            hoverColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+            child: Container(
+              color: Theme.of(context).colorScheme.surface,
+              child: const Icon(Icons.arrow_circle_left_outlined),
+            ),
           ),
         ),
       ),

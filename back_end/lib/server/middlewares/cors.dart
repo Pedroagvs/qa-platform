@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:back_end/app/domain/exceptions/common/common_exceptions.dart';
 import 'package:shelf/shelf.dart';
 
 Middleware corsMiddleware() {

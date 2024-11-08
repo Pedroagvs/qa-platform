@@ -4,7 +4,6 @@ import 'package:back_end/app/infra/infra.dart';
 import 'package:back_end/app/injects/injects_container.dart';
 import 'package:back_end/config/config.dart';
 import 'package:back_end/server/server.dart';
-import 'package:shelf_hotreload/shelf_hotreload.dart';
 
 void main(List<String> arguments) async {
   for (final arg in arguments) {

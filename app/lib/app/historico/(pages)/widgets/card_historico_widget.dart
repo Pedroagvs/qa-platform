@@ -37,16 +37,15 @@ class CardHistorico extends StatelessWidget with HookMixin {
             final args = {
               'title': title,
               'description': historico.feature,
-              'idHistorico': historico.idHistorico,
               'source': historico.source,
               'historicClosed': historico.closed,
+              'idApplication': idAplicacao,
             };
-            updateRoutes(
-              routePaths.testes,
-              args,
-            );
+            updateArgs('T_${historico.idHistorico}', args);
             Routefly.pushNavigate(
-              routePaths.testes,
+              routePaths.testes.$idHistorico.changes({
+                'idHistorico': historico.idHistorico.toString(),
+              }),
               arguments: args,
             ).then((_) {
               getHistorics(page, idAplicacao);

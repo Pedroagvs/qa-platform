@@ -10,17 +10,14 @@ final prefsAtom = selector((get) async {
   return SharedPreferences.getInstance();
 });
 
-final routeAtom = atom<String>('');
 final argsAtom = atom<String>('');
 final theme = atom<ThemeMode>(ThemeMode.system);
 final user = atom<UserEntity?>(UserDto.empty());
 
-final updateRoutes =
-    atomAction2<String, Map<String, dynamic>>((set, route, args) async {
+final updateArgs =
+    atomAction2<String, Map<String, dynamic>>((set, id, args) async {
   final prefs = await prefsAtom.state;
-  await prefs.setString('route', route);
-  await prefs.setString('args', jsonEncode(args));
-  set(routeAtom, route);
+  await prefs.setString(id, jsonEncode(args));
   set(argsAtom, jsonEncode(args));
 });
 final updateThemeCache = atomAction1<ThemeMode>((set, newMode) async {
@@ -34,10 +31,10 @@ final updateUserCache = atomAction1<UserEntity>((set, user) async {
 });
 Future<String> getUser() async =>
     (await prefsAtom.state).getString('user') ?? '';
-Future<String> getRoute() async =>
-    (await prefsAtom.state).getString('route') ?? '';
-Future<String> getArgs() async =>
-    (await prefsAtom.state).getString('args') ?? '';
+
+Future<Map<String, dynamic>> getArgs(String id) async =>
+    jsonDecode((await prefsAtom.state).getString(id) ?? '{}');
+
 Future<String> getTheme() async =>
     (await prefsAtom.state).getString('theme') ?? 'system';
 

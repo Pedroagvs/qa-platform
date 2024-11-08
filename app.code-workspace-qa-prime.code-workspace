@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "back_end"
+		},
+		{
+			"path": "mysql"
 		}
 	],
 	"settings": {

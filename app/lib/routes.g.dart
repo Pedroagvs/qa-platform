@@ -2,29 +2,20 @@
 
 import 'package:routefly/routefly.dart';
 
-import 'app/historico/(pages)/historico_page.dart' as a0;
-import 'app/home/(pages)/home_page.dart' as a1;
-import 'app/login/(pages)/login_page.dart' as a2;
-import 'app/not_found_page.dart' as a3;
-import 'app/testes/(pages)/testes_page.dart' as a4;
+import 'app/historico/(pages)/[idApplication]_page.dart' as a2;
+import 'app/home/(pages)/home_page.dart' as a3;
+import 'app/login/(pages)/login_page.dart' as a1;
+import 'app/not_found_page.dart' as a0;
+import 'app/testes/(pages)/[idHistorico]_page.dart' as a4;
 
 List<RouteEntity> get routes => [
       RouteEntity(
-        key: '/historico',
-        uri: Uri.parse('/historico'),
+        key: '/not_found',
+        uri: Uri.parse('/not_found'),
         routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
           ctx,
           settings,
-          const a0.HistoricoPage(),
-        ),
-      ),
-      RouteEntity(
-        key: '/home',
-        uri: Uri.parse('/home'),
-        routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
-          ctx,
-          settings,
-          const a1.HomePage(),
+          const a0.NotFoundPage(),
         ),
       ),
       RouteEntity(
@@ -33,21 +24,30 @@ List<RouteEntity> get routes => [
         routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
           ctx,
           settings,
-          const a2.LoginPage(),
+          const a1.LoginPage(),
         ),
       ),
       RouteEntity(
-        key: '/not_found',
-        uri: Uri.parse('/not_found'),
+        key: '/historico/[idApplication]',
+        uri: Uri.parse('/historico/[idApplication]'),
         routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
           ctx,
           settings,
-          const a3.NotFoundPage(),
+          const a2.HistoricoPage(),
         ),
       ),
       RouteEntity(
-        key: '/testes',
-        uri: Uri.parse('/testes'),
+        key: '/home',
+        uri: Uri.parse('/home'),
+        routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
+          ctx,
+          settings,
+          const a3.HomePage(),
+        ),
+      ),
+      RouteEntity(
+        key: '/testes/[idHistorico]',
+        uri: Uri.parse('/testes/[idHistorico]'),
         routeBuilder: (ctx, settings) => Routefly.defaultRouteBuilder(
           ctx,
           settings,
@@ -58,9 +58,15 @@ List<RouteEntity> get routes => [
 
 const routePaths = (
   path: '/',
-  historico: '/historico',
-  home: '/home',
-  login: '/login',
   notFound: '/not_found',
-  testes: '/testes',
+  login: '/login',
+  historico: (
+    path: '/historico',
+    $idApplication: '/historico/[idApplication]',
+  ),
+  home: '/home',
+  testes: (
+    path: '/testes',
+    $idHistorico: '/testes/[idHistorico]',
+  ),
 );

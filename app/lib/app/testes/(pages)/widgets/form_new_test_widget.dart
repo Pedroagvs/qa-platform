@@ -1,6 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/list_arquivos_teste.dart';
 import 'package:quality_assurance_platform/app/testes/controller/atom/teste_atom.dart';
 import 'package:quality_assurance_platform/app/testes/controller/states/testes_state.dart';

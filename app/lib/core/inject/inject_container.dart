@@ -10,7 +10,7 @@ import 'services/anexar_arquivos.dart';
 
 void injectContainer(GetIt getIt) {
   injectUsers(getIt);
-  injectUnoClient(getIt);
+  injectClient(getIt);
   injectAnexarArquivoService(getIt);
   injectLogin(getIt);
   initHome(getIt);

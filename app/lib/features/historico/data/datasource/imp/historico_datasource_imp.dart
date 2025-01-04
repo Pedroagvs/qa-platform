@@ -3,8 +3,8 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/client/status_code.dart';
-import 'package:quality_assurance_platform/core/client/uno_client.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/historico/data/datasource/interface/historico_datasource.dart';
@@ -12,7 +12,7 @@ import 'package:quality_assurance_platform/features/historico/data/dto/historico
 import 'package:uno/uno.dart';
 
 class HistoricoDataSourceImp implements HistoricoDataSource {
-  final UnoClient unoClient;
+  final Client unoClient;
   HistoricoDataSourceImp({
     required this.unoClient,
   });
@@ -83,6 +83,8 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -118,6 +120,8 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -155,6 +159,8 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -186,6 +192,8 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -221,6 +229,8 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -263,6 +273,8 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -292,6 +304,8 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }

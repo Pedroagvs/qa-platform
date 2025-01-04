@@ -1,5 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/atoms/suites_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/states/suites_state.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
@@ -34,7 +35,7 @@ class _FormNewSuitTestWidgetState extends State<FormNewSuitTestWidget>
           toastSuccessMessage(
             context: context,
             title: 'Sucesso',
-            description: applicationState.msgToast,
+            description: msgAtom.state,
           );
           updateApplicationStatus(ApplicationStatus.initial);
           clearGenericSuite();
@@ -43,7 +44,7 @@ class _FormNewSuitTestWidgetState extends State<FormNewSuitTestWidget>
           toastErrorMessage(
             context: context,
             title: 'Erro',
-            description: applicationState.msgToast,
+            description: msgAtom.state,
           );
           updateApplicationStatus(ApplicationStatus.initial);
         }

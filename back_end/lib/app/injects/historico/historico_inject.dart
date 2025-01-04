@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 
 void injectHistorico(GetIt getIt) {
   getIt
-    ..registerFactory<HistoricGateway>(
+    ..registerLazySingleton<HistoricGateway>(
       () => HistoricoDAO(
         connection: getIt(),
       ),

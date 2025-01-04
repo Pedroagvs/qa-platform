@@ -11,7 +11,6 @@ class TestesState {
   final bool isEditing;
   final bool showFormSelectedTest;
   final bool showForm;
-  final String msgToast;
   const TestesState({
     required this.statusTestes,
     required this.selectedTest,
@@ -19,7 +18,6 @@ class TestesState {
     this.cacheFiles = const [],
     this.filteredTests = const [],
     this.isEditing = false,
-    this.msgToast = '',
     this.showFormSelectedTest = false,
     this.showForm = false,
     this.selectedSituation = SituacaoTeste.todos,

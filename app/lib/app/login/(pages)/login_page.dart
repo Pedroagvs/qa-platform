@@ -1,11 +1,13 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
 import 'package:quality_assurance_platform/app/login/(pages)/widgets/form_create_account_widget.dart';
 import 'package:quality_assurance_platform/app/login/(pages)/widgets/form_login_widget.dart';
 import 'package:quality_assurance_platform/app/login/(pages)/widgets/form_lost_password_widget.dart';
 import 'package:quality_assurance_platform/app/login/controller/atom/create_account_atom.dart';
 import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/app/login/controller/atom/lost_password_atom.dart';
+import 'package:quality_assurance_platform/core/functions/show_message.dart';
 import 'package:quality_assurance_platform/core/functions/validators.dart';
 import 'package:quality_assurance_platform/routes.g.dart';
 import 'package:routefly/routefly.dart';
@@ -20,7 +22,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage>
-    with Validators, HookStateMixin, SingleTickerProviderStateMixin {
+    with
+        Validators,
+        HookStateMixin,
+        SingleTickerProviderStateMixin,
+        MessageToast {
   final _formKey = GlobalKey<FormState>();
 
   late final AssetImage img;
@@ -51,6 +57,8 @@ class _LoginPageState extends State<LoginPage>
       effect: (status) {
         if (status == LoginStatus.success) {
           Routefly.navigate(routePaths.home);
+        } else if (status == LoginStatus.failure) {
+          toastErrorMessage(context: context, description: msgAtom.state);
         }
       },
     );

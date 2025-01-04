@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS qa_platform DEFAULT CHARACTER SET utf8;
+CREATE SCHEMA IF NOT EXISTS db_mysql_qa_platform DEFAULT CHARACTER SET utf8;
  
-USE qa_platform;
+USE db_mysql_qa_platform;
 
 CREATE TABLE IF NOT EXISTS  tb_funcionalidades(
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,

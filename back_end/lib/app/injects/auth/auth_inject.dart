@@ -12,11 +12,24 @@ void injectAuth(GetIt getIt) {
       ),
     )
     ..registerLazySingleton<AuthUseCase>(
-      () => AuthService(authGateway: getIt()),
+      () => AuthService(
+        authGateway: getIt(),
+        userGateway: getIt(),
+      ),
+    )
+    ..registerLazySingleton<AuthHandler>(
+      () => AuthHandler(
+        login: LoginHandler(authUseCase: getIt()),
+        changePassword: ChangePasswordHandler(
+          authUseCase: getIt(),
+        ),
+        createAccount: CreateAccountHandler(authUseCase: getIt()),
+      ),
     )
     ..registerLazySingleton<AuthController>(
       () => AuthController(
         authUseCase: getIt(),
+        authHandler: getIt(),
       ),
     );
 }

@@ -15,5 +15,44 @@
 		"editor.codeActionsOnSave": {
 			"source.fixAll": "explicit",
 		}
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Flutter Debug",
+				"type": "dart",
+				"request": "launch",
+				"flutterMode": "debug",
+				"program": "C:/Users/Pedro/Documents/GitHub/qa-platform/app/lib/main.dart",
+				"args": [
+					"--dart-define",
+					"SERVER_URL=http://127.0.0.1:8000"
+				]
+			},
+			{
+				"name": "Server Debug",
+				"type": "dart",
+				"request": "launch",
+				"flutterMode": "debug",
+				"program": "back_end/bin/server.dart",
+				"env": {
+					"HOST": "localhost",
+					"PORT": "3306",
+					"USER": "admin",
+					"PASSWORD": "123456@",
+					"DB_NAME": "db_mysql_qa_platform"
+				}
+			}
+		],
+		"compounds": [
+			{
+				"name": "Start Server and Client",
+				"configurations": [
+					"Server Debug",
+					"Flutter Debug"
+				]
+			}
+		]
 	}
 }

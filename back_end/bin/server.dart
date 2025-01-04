@@ -6,9 +6,6 @@ import 'package:back_end/config/config.dart';
 import 'package:back_end/server/server.dart';
 
 void main(List<String> arguments) async {
-  for (final arg in arguments) {
-    log(arg);
-  }
   await injectInit();
   final server = await init();
 

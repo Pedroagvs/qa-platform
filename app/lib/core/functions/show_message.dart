@@ -12,8 +12,8 @@ mixin MessageToast {
       title: Text(title),
       description: Text(
         description,
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
       animationType: AnimationType.fromRight,
       animationDuration: const Duration(
         milliseconds: 1000,
@@ -30,8 +30,8 @@ mixin MessageToast {
       title: Text(title),
       description: Text(
         description,
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
       animationType: AnimationType.fromRight,
       animationDuration: const Duration(
         milliseconds: 1000,

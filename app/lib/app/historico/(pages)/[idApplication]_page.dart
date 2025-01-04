@@ -1,12 +1,13 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/(pages)/widgets/card_historico_widget.dart';
 import 'package:quality_assurance_platform/app/historico/(pages)/widgets/form_historic_widget.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/states/historico_state.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
-import 'package:quality_assurance_platform/app/routes_atom.dart';
 import 'package:quality_assurance_platform/core/functions/show_message.dart';
 import 'package:quality_assurance_platform/features/historico/data/dto/historico_dto.dart';
 import 'package:quality_assurance_platform/routes.g.dart';
@@ -49,7 +50,6 @@ class _HistoricoPageState extends State<HistoricoPage>
     final page = useAtomState(pageAtom);
     final historicState = useAtomState(historicStateAtom);
     final showFormState = useAtomState(showFormHistoricAtom);
-
     useAtomEffect(
       (get) => get(historicStatusAtom),
       effect: (status) {
@@ -58,7 +58,7 @@ class _HistoricoPageState extends State<HistoricoPage>
             status == HistoricoStatus.successDelete) {
           toastSuccessMessage(
             context: context,
-            description: historicState.msgToast,
+            description: msgAtom.state,
           );
           getHistorics(page, idApplication);
         }

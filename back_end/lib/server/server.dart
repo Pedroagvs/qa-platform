@@ -14,7 +14,7 @@ part 'response/response_json.dart';
 class Server {
   static Future<HttpServer> bootStrap(List<Controller> controllers) async {
     final staticHandler = createStaticHandler(
-      '../app/build/web/',
+      '${Directory.current.path}/app/build/web',
       serveFilesOutsidePath: true,
       useHeaderBytesForContentType: true,
       listDirectories: true,

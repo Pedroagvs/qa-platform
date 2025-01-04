@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/create_account_atom.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
 import 'package:quality_assurance_platform/app/testes/controller/states/testes_state.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/teste_dto.dart';
@@ -194,10 +194,10 @@ final finishTest = atomAction1<Map<String, dynamic>>((set, mapUpdate) async {
     },
   );
   if (record.failure != null) {
-    set(toastMsgAtom, record.failure?.errorMessage.toString());
+    set(msgAtom, record.failure?.errorMessage.toString());
     set(statusTestesAtom, StatusTestes.failureFinish);
   } else if (record.success != null) {
-    set(toastMsgAtom, 'Successo ao finalizar o ticket.');
+    set(msgAtom, 'Successo ao finalizar o ticket.');
     set(statusTestesAtom, StatusTestes.successFinish);
   }
 });
@@ -207,6 +207,7 @@ final deleteFile = atomAction2<int, int>((set, idTeste, idArquivo) async {
   final record =
       await testeUseCase.deleteArquivo(idTeste: idTeste, idArquivo: idArquivo);
   if (record.failure != null) {
+    set(msgAtom, record.failure?.errorMessage.toString());
     set(statusTestesAtom, StatusTestes.failureDeleteFile);
   } else if (record.success != null) {
     set(statusTestesAtom, StatusTestes.successDeleteFile);
@@ -246,6 +247,7 @@ final deleteTicketTest =
     idHistorico: idHistorico,
   );
   if (record.failure != null) {
+    set(msgAtom, record.failure?.errorMessage.toString());
     set(statusTestesAtom, StatusTestes.failureDeleteTicket);
   } else if (record.success != null) {
     set(statusTestesAtom, StatusTestes.successDeleteTicket);

@@ -1,7 +1,8 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
-import 'package:quality_assurance_platform/app/routes_atom.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/bar_info_testes.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/card_teste.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/filtro_tickets_status.dart';
@@ -86,7 +87,8 @@ class _TestesPageState extends State<TestesPage>
           visible: !testeState.showForm && !testeState.showFormSelectedTest,
           child: IconButton(
             onPressed: showInfoDialog,
-            hoverColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            hoverColor:
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
             icon: const Icon(Icons.info_outline_rounded),
             color: Theme.of(context).colorScheme.onSurface,
           ),
@@ -160,14 +162,14 @@ class _TestesPageState extends State<TestesPage>
         } else if (status == StatusTestes.successFinish) {
           toastSuccessMessage(
             context: context,
-            description: testeState.msgToast,
+            description: msgAtom.state,
           );
           getTestes(idHistorico);
           showFormSelectedTest(false);
         } else if (status == StatusTestes.failureFinish) {
           toastErrorMessage(
             context: context,
-            description: testeState.msgToast,
+            description: msgAtom.state,
           );
         }
       },

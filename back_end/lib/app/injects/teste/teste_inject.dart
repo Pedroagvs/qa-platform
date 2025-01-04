@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 
 void injectTeste(GetIt getIt) {
   getIt
-    ..registerFactory<TesteGateWay>(
+    ..registerLazySingleton<TesteGateWay>(
       () => TesteDAO(
         connection: getIt(),
       ),

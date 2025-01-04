@@ -5,9 +5,12 @@ import 'package:test/test.dart';
 
 class AplicacaoServiceMock extends Mock implements AplicacaoService {}
 
+class AplicacaoHandlerMock extends Mock implements AplicacaoHandler {}
+
 void main() {
   final controller = AplicacaoController(
     aplicacaoUseCase: AplicacaoServiceMock(),
+    aplicacaoHandler: AplicacaoHandlerMock(),
   );
 
   group('Test do AplicacaoController => ', () {

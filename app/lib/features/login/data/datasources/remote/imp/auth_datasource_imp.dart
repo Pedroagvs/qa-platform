@@ -1,10 +1,10 @@
-import 'package:quality_assurance_platform/core/client/uno_client.dart';
+import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/user_dto.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/login/data/datasources/remote/interface/auth_datasource.dart';
 
 class AuthDataSourceImp implements AuthDataSource {
-  final UnoClient unoClient;
+  final Client unoClient;
   AuthDataSourceImp({required this.unoClient});
   @override
   Future<bool> createUserWithEmailAndPassword({
@@ -25,6 +25,8 @@ class AuthDataSourceImp implements AuthDataSource {
         },
       );
       return response.data != null;
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -47,6 +49,8 @@ class AuthDataSourceImp implements AuthDataSource {
         return UserDto.fromJson(response.data);
       }
       throw Failure(errorMessage: 'Falha ao realizar o login !');
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -71,6 +75,8 @@ class AuthDataSourceImp implements AuthDataSource {
         return response.data['mensagem'].toString().contains('Sucesso');
       }
       throw Failure(errorMessage: 'Falha ao realizar o login !');
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }

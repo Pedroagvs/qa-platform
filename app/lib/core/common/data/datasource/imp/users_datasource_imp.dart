@@ -3,14 +3,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:quality_assurance_platform/core/client/uno_client.dart';
+import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/common/data/datasource/interface/users_datasource.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/user_dto.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:uno/uno.dart';
 
 class UsersDataSourceImp implements UsersDataSource {
-  final UnoClient unoClient;
+  final Client unoClient;
   UsersDataSourceImp(this.unoClient);
   @override
   Future<List<UserDto>> getUsers() async {
@@ -24,6 +24,8 @@ class UsersDataSourceImp implements UsersDataSource {
             .toList();
       }
       throw Failure(errorMessage: 'Falha criar o grupo !');
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -55,6 +57,8 @@ class UsersDataSourceImp implements UsersDataSource {
         return response.data['mensagem'].toString().contains('Sucesso');
       }
       throw Failure(errorMessage: 'Falha criar o grupo !');
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }

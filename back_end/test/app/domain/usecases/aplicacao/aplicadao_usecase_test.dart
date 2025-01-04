@@ -18,8 +18,7 @@ void main() {
   });
   group('Testes de AplicaçãoUseCase => ', () {
     test('Espero receber uma lista de Aplicações', () async {
-      final result =
-          await aplicacaoUseCase.get(requestParams: RequestParams(body: {}));
+      final result = await aplicacaoUseCase.get();
       expect(result, isA<List<AplicacaoDto>>());
     });
 

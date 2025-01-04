@@ -1,12 +1,12 @@
+import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/client/status_code.dart';
-import 'package:quality_assurance_platform/core/client/uno_client.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/application_entity.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/home/data/datasources/interface/aplicacoes_datasource.dart';
 import 'package:quality_assurance_platform/features/home/data/dtos/suite_teste_dto.dart';
 
 class ApplicationDataSourceImp implements ApplicationDataSource {
-  final UnoClient unoClient;
+  final Client unoClient;
   ApplicationDataSourceImp({required this.unoClient});
   @override
   Future<String> createApplication({
@@ -38,6 +38,8 @@ class ApplicationDataSourceImp implements ApplicationDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -68,6 +70,8 @@ class ApplicationDataSourceImp implements ApplicationDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -99,6 +103,8 @@ class ApplicationDataSourceImp implements ApplicationDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }
@@ -136,6 +142,8 @@ class ApplicationDataSourceImp implements ApplicationDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }

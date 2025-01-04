@@ -1,6 +1,6 @@
 import 'package:uno/uno.dart';
 
-abstract class UnoClient {
+abstract class Client {
   Future<Response> get({
     required String path,
     Map<String, String> params = const {},
@@ -17,6 +17,7 @@ abstract class UnoClient {
   Future<Response> delete({
     required String path,
     required Map<String, dynamic> data,
+    Duration? timeOut,
   });
   Future<Response> put({
     required String path,

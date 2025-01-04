@@ -26,10 +26,7 @@ class AplicacaoService implements AplicacaoUseCase {
       aplicacaoGateway.delete(requestParams: requestParams);
 
   @override
-  Future<List<AplicacaoDto>> get({
-    required RequestParams requestParams,
-  }) async =>
-      aplicacaoGateway.get(requestParams: requestParams);
+  Future<List<AplicacaoDto>> get() async => aplicacaoGateway.get();
 
   @override
   Future<bool> update({required RequestParams requestParams}) async =>

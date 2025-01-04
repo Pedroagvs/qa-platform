@@ -8,7 +8,7 @@ class AplicacaoDAO implements AplicacaoGateway {
     required this.connection,
   });
   @override
-  Future<List<AplicacaoDto>> get({required RequestParams requestParams}) async {
+  Future<List<AplicacaoDto>> get() async {
     try {
       final row = await connection.query('''
             SELECT * FROM 

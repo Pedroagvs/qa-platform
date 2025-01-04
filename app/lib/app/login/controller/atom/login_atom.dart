@@ -1,8 +1,9 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/routes_atom.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/user_entity.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/features/login/domain/usecases/interface/auth_usecase.dart';
 
 final authUseCase = GetIt.I.get<AuthUseCase>();
@@ -15,16 +16,12 @@ final passwordAtom =
 
 final obscureTextAtom = atom<bool>(true);
 
-final userAtom = atom<UserEntity?>(null);
-
 final isLoggedAtom = atom<bool>(false);
 
 final updateIslogged = atomAction1<bool>(
   key: 'updateIslogged',
   (set, value) => set(isLoggedAtom, value),
 );
-
-final updateUser = atomAction1<UserEntity?>((set, user) => set(userAtom, user));
 
 final changeObscureFieldLogin =
     atomAction1<bool>(key: 'changeObscureFieldLogin', (set, newValue) {
@@ -46,6 +43,7 @@ final submitLogin = atomAction2<String, String>(key: 'submitLogin', (
     passWord: password,
   );
   if (result.failure != null) {
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(statusLoginAtom, LoginStatus.failure);
     await Future.delayed(
       const Duration(seconds: 2),

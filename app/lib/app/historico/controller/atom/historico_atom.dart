@@ -1,7 +1,8 @@
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/states/historico_state.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/historico_entity.dart';
@@ -26,7 +27,6 @@ final showFormHistoricAtom = atom<bool>(false);
 final isEditAtom = atom<bool>(false);
 final filterAtom = atom<String>('');
 final pageAtom = atom<int>(0);
-final msgToastAtom = atom<String>('');
 // Actions
 
 final updateShowForm = atomAction1<bool>(
@@ -68,10 +68,7 @@ final updateIdAplicacao = atomAction1<int>(
   key: 'updateIdAplicacao',
   (set, newValue) => set(idAplicacaoAtom, newValue),
 );
-final updateMsgToast = atomAction1<String>(
-  key: 'updateMsgToast',
-  (set, newValue) => set(msgToastAtom, newValue),
-);
+
 final updateFile = atomAction1<ArquivoEntity>(
   key: 'updateFile',
   (set, newFile) => set(fileAtom, newFile),
@@ -83,7 +80,7 @@ final historicStateAtom =
   final historicStatus = get(historicStatusAtom);
   final historics = get(historicAtom);
   final filteredHistorics = get(filteredHistoricsAtom);
-  final msg = get(msgToastAtom);
+
   final page = get(pageAtom);
   final idAplicacao = get(idAplicacaoAtom);
   final isEdit = get(isEditAtom);
@@ -91,7 +88,6 @@ final historicStateAtom =
     historicEntity: genericHistoric,
     historicoStatus: historicStatus,
     historics: historics,
-    msgToast: msg,
     page: page,
     filteredHistorics: filteredHistorics,
     idAplicacao: idAplicacao,
@@ -107,7 +103,7 @@ final getHistorics = atomAction2<int, int>(key: 'getHistorics',
     idAplicacao: idAplicacao,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(historicStatusAtom, HistoricoStatus.failureGet);
   } else if (result.historicos != null) {
     set(historicAtom, result.historicos);
@@ -136,10 +132,10 @@ final createHistoric = atomAction1(key: 'createHistoric', (
     arquivoEntity: record.$6,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(historicStatusAtom, HistoricoStatus.failureCreate);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(historicStatusAtom, HistoricoStatus.successCreate);
   }
 });
@@ -154,10 +150,10 @@ final editHistoric = atomAction1<Map<String, dynamic>>(key: 'editHistoric', (
   );
 
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(historicStatusAtom, HistoricoStatus.failureEdit);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(historicStatusAtom, HistoricoStatus.successEdit);
   }
 });
@@ -170,10 +166,10 @@ final deleteHistoric = atomAction2<int, int>(key: 'deleteHistoric',
     idAplicacao: idAplicacao,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(historicStatusAtom, HistoricoStatus.failureDelete);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(historicStatusAtom, HistoricoStatus.successDelete);
   }
 });
@@ -184,10 +180,10 @@ final deleteFileHistoric =
     idHistorico,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(historicStatusAtom, HistoricoStatus.failureDelete);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(historicStatusAtom, HistoricoStatus.successDelete);
   }
 });
@@ -201,7 +197,7 @@ final getFileHistoric = atomAction3<int, int, String>(key: 'getFileHistoric',
     idArquivo: idArquivo,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(historicStatusAtom, HistoricoStatus.failureDownload);
   } else if (result.bytes != null) {
     HtmlService.donwloadFile(nameFile, result.bytes!);
@@ -222,10 +218,10 @@ final sendFileHistoric =
     arquivo,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(historicStatusAtom, HistoricoStatus.failureUpload);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(historicStatusAtom, HistoricoStatus.successUpload);
   }
 });

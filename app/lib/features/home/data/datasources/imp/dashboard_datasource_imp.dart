@@ -1,12 +1,12 @@
+import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/client/status_code.dart';
-import 'package:quality_assurance_platform/core/client/uno_client.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/dashboard_dto.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/dashboard_entity.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/home/data/datasources/interface/dashboard_datasource.dart';
 
 class DashboardDataSourceImp implements DashboardDataSource {
-  final UnoClient unoClient;
+  final Client unoClient;
   DashboardDataSourceImp({required this.unoClient});
   @override
   Future<List<DashboardEntity>> call({
@@ -40,6 +40,8 @@ class DashboardDataSourceImp implements DashboardDataSource {
           throw Failure();
       }
       throw Failure();
+    } on Failure {
+      rethrow;
     } catch (e, s) {
       throw Failure(errorMessage: e.toString(), stackTrace: s);
     }

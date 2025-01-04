@@ -6,11 +6,9 @@ class ApplicationState {
   final bool showForm;
   final bool isEdit;
   final ApplicationEntity application;
-  final String msgToast;
   const ApplicationState({
     this.isEdit = false,
     this.showForm = false,
-    this.msgToast = '',
     this.applicationStatus = ApplicationStatus.initial,
     required this.application,
     this.aplications = const [],

@@ -4,8 +4,9 @@ import 'dart:convert';
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
-import 'package:quality_assurance_platform/app/routes_atom.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/user_dto.dart';
 import 'package:quality_assurance_platform/core/common/presentation/atom/theme_atom.dart';
 import 'package:quality_assurance_platform/core/config/colors/theme.dart';
@@ -14,6 +15,7 @@ import 'package:quality_assurance_platform/core/functions/show_message.dart';
 import 'package:quality_assurance_platform/core/inject/inject_container.dart';
 import 'package:routefly/routefly.dart';
 import 'package:url_strategy/url_strategy.dart';
+
 import '../routes.g.dart';
 
 GetIt getIt = GetIt.instance;

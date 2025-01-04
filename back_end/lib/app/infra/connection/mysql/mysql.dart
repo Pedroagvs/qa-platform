@@ -41,23 +41,13 @@ class MySQl implements Connection {
 
   @override
   Future<void> initConnection() async {
-    // _mySqlConnection = MySQLConnectionPool(
-    //   host: const String.fromEnvironment(
-    //     'host',
-    //   ),
-    //   port: const int.fromEnvironment('port'),
-    //   userName: const String.fromEnvironment('user'),
-    //   password: const String.fromEnvironment('password'),
-    //   databaseName: const String.fromEnvironment('db_name'),
-    //   maxConnections: 15,
-    // );
     _mySqlConnection = MySQLConnectionPool(
-      host: 'localhost',
-      port: 3306,
-      userName: 'platformQA',
-      password: 'platform@123',
-      databaseName: 'qa_platform',
-      maxConnections: 50,
+      host: Platform.environment['HOST'] ?? 'default_host',
+      port: int.tryParse(Platform.environment['PORT'] ?? '3306') ?? 3306,
+      userName: Platform.environment['USER'] ?? 'default_user',
+      password: Platform.environment['PASSWORD'] ?? 'default_password',
+      databaseName: Platform.environment['DB_NAME'] ?? 'default_db',
+      maxConnections: 15,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
 import 'package:quality_assurance_platform/app/login/controller/atom/create_account_atom.dart';
 import 'package:quality_assurance_platform/core/functions/show_message.dart';
 import 'package:quality_assurance_platform/core/functions/validators.dart';
@@ -19,25 +20,33 @@ class FormCreateAccountWidget extends StatefulWidget {
 
 class _FormCreateAccountWidgetState extends State<FormCreateAccountWidget>
     with HookStateMixin, Validators, MessageToast {
+  final nomeController = TextEditingController();
+  final emailController = TextEditingController();
+  final senhaController = TextEditingController();
+  final confirmarSenhaController = TextEditingController();
+  @override
+  void dispose() {
+    nomeController.dispose();
+    emailController.dispose();
+    senhaController.dispose();
+    confirmarSenhaController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final nomeController = useAtomState(nomeCreateAccountAtom);
     final cargoState = useAtomState(cargoAtom);
-    final emailController = useAtomState(emailCreateAccountAtom);
-    final senhaController = useAtomState(senhaCreateAccountAtom);
     final showPassword = useAtomState(showPasswordAtom);
-    final confirmarSenhaController =
-        useAtomState(confirmarSenhaCreateAccountAtom);
     final statusCreateAccount = useAtomState(createAccountAtom);
-    final toastMsg = useAtomState(toastMsgAtom);
+
     useAtomEffect(
       (get) => get(createAccountAtom),
       effect: (status) {
         if (status == StatusCreateAccount.success) {
-          toastSuccessMessage(context: context, description: toastMsg);
+          toastSuccessMessage(context: context, description: msgAtom.state);
           showFormCreateAccount(false);
         } else if (status == StatusCreateAccount.failure) {
-          toastErrorMessage(context: context, description: toastMsg);
+          toastErrorMessage(context: context, description: msgAtom.state);
         }
       },
     );

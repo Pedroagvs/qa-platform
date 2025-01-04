@@ -2,14 +2,14 @@ services:
 
   database:
     image: mysql:8.0.33
-    container_name: qa_platform_mysql
+    container_name: db_mysql_qa_platform
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_DATABASE: 'qa_platform'
-      MYSQL_USER: 'platformQA'
-      MYSQL_PASSWORD: 'platform@123'
-      MYSQL_ROOT_PASSWORD: 'platform@123'
+      MYSQL_DATABASE: 'db_mysql_qa_platform'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: '123456@'
+      MYSQL_ROOT_PASSWORD: '123456@'
     ports:
       - '3306:3306'
     expose:

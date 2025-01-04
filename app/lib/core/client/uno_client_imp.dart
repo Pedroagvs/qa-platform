@@ -1,18 +1,19 @@
+import 'dart:async';
 import 'dart:developer';
 
-import 'package:quality_assurance_platform/core/client/uno_client.dart';
+import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
-import 'package:quality_assurance_platform/core/functions/hooks.dart';
 import 'package:uno/uno.dart';
 
-class UnoClientImp implements UnoClient {
+class ClientImp implements Client {
   final Uno uno;
-  UnoClientImp({required this.uno});
+  ClientImp({required this.uno});
   @override
   Future<Response> delete({
     required String path,
     required Map<String, dynamic> data,
     void Function(int, int)? onProgress,
+    Duration? timeOut,
   }) async {
     try {
       log(
@@ -23,10 +24,17 @@ class UnoClientImp implements UnoClient {
         path,
         onDownloadProgress: onProgress,
         data: data,
+        timeout: timeOut ?? const Duration(seconds: 10),
+      );
+    } on TimeoutException {
+      throw Failure(
+        errorMessage: 'Tempo esgotado, tente novamente.',
       );
     } catch (e, s) {
-      await hooks(e.toString(), s);
-      rethrow;
+      throw Failure(
+        errorMessage: e.toString(),
+        stackTrace: s,
+      );
     }
   }
 
@@ -46,7 +54,7 @@ class UnoClientImp implements UnoClient {
         path,
         params: params,
         onDownloadProgress: onProgress,
-        timeout: timeOut,
+        timeout: timeOut ?? const Duration(seconds: 10),
       );
     } on UnoError catch (e, s) {
       if (e.response != null) {
@@ -60,9 +68,15 @@ class UnoClientImp implements UnoClient {
           stackTrace: s,
         );
       }
+    } on TimeoutException {
+      throw Failure(
+        errorMessage: 'Tempo esgotado, tente novamente.',
+      );
     } catch (e, s) {
-      await hooks(e.toString(), s);
-      rethrow;
+      throw Failure(
+        errorMessage: e.toString(),
+        stackTrace: s,
+      );
     }
   }
 
@@ -84,7 +98,7 @@ class UnoClientImp implements UnoClient {
         data: data,
         headers: headers,
         onDownloadProgress: onProgress,
-        timeout: timeOut,
+        timeout: timeOut ?? const Duration(seconds: 10),
       );
     } on UnoError catch (e, s) {
       if (e.response != null) {
@@ -98,9 +112,15 @@ class UnoClientImp implements UnoClient {
           stackTrace: s,
         );
       }
+    } on TimeoutException {
+      throw Failure(
+        errorMessage: 'Tempo esgotado, tente novamente.',
+      );
     } catch (e, s) {
-      await hooks(e.toString(), s);
-      rethrow;
+      throw Failure(
+        errorMessage: e.toString(),
+        stackTrace: s,
+      );
     }
   }
 
@@ -121,6 +141,7 @@ class UnoClientImp implements UnoClient {
         path,
         data: data,
         onDownloadProgress: onProgress,
+        timeout: timeOut ?? const Duration(seconds: 10),
       );
     } on UnoError catch (e, s) {
       if (e.response != null) {
@@ -134,9 +155,15 @@ class UnoClientImp implements UnoClient {
           stackTrace: s,
         );
       }
+    } on TimeoutException {
+      throw Failure(
+        errorMessage: 'Tempo esgotado, tente novamente.',
+      );
     } catch (e, s) {
-      await hooks(e.toString(), s);
-      rethrow;
+      throw Failure(
+        errorMessage: e.toString(),
+        stackTrace: s,
+      );
     }
   }
 }

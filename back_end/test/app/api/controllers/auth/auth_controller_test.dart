@@ -5,9 +5,12 @@ import 'package:test/test.dart';
 
 class AuthServiceMock extends Mock implements AuthService {}
 
+class AuthHandlerMock extends Mock implements AuthHandler {}
+
 void main() {
   final controller = AuthController(
     authUseCase: AuthServiceMock(),
+    authHandler: AuthHandlerMock(),
   );
 
   group('Autenticacao ->', () {

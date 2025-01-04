@@ -1,5 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/states/suites_state.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/application_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
@@ -15,7 +16,6 @@ final titleAtom = atom<String>('');
 final platformAtom = atom<Platform>(Platform.mobile);
 final idAtom = atom<int>(0);
 //Actions
-final msgToastAtom = atom<String>('');
 final showFormSuiteAtom = atom<bool>(false);
 final isEditSuiteAtom = atom<bool>(false);
 
@@ -63,10 +63,10 @@ final editSuite = atomAction3<String, String, int>(key: 'editSuite',
     platform: platform,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(applicationStatusAtom, ApplicationStatus.failureEdit);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(applicationStatusAtom, ApplicationStatus.successEdit);
     getSuites();
   }
@@ -80,10 +80,10 @@ final createSuite = atomAction2<String, String>(key: 'createSuite',
     platform: platform,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(applicationStatusAtom, ApplicationStatus.failureCreate);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(applicationStatusAtom, ApplicationStatus.successCreate);
     getSuites();
   }
@@ -95,10 +95,10 @@ final deleteSuite = atomAction1<int>(key: 'deleteSuite', (set, int id) async {
     idApplication: id,
   );
   if (result.failure != null) {
-    set(msgToastAtom, result.failure?.errorMessage.toString());
+    set(msgAtom, result.failure?.errorMessage.toString());
     set(applicationStatusAtom, ApplicationStatus.failureDelete);
   } else if (result.message != null) {
-    set(msgToastAtom, result.message.toString());
+    set(msgAtom, result.message.toString());
     set(applicationStatusAtom, ApplicationStatus.successDelete);
     getSuites();
   }
@@ -123,7 +123,6 @@ final applicationSelectAtom =
   final aplications = get(aplicationsAtom);
   final isEdit = get(isEditSuiteAtom);
   final showForm = get(showFormSuiteAtom);
-  final msgToast = get(msgToastAtom);
   final genericAplication = get(genericSelectorAtom);
   return ApplicationState(
     applicationStatus: status,
@@ -131,6 +130,5 @@ final applicationSelectAtom =
     isEdit: isEdit,
     showForm: showForm,
     application: genericAplication,
-    msgToast: msgToast,
   );
 });

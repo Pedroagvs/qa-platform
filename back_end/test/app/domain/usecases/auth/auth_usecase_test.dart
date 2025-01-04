@@ -12,7 +12,10 @@ void main() {
   setUpAll(() async {
     mySQl = MySQl();
     await mySQl.initConnection();
-    authUseCase = AuthService(authGateway: AuthDAO(connection: mySQl));
+    authUseCase = AuthService(
+      authGateway: AuthDAO(connection: mySQl),
+      userGateway: UserDAO(connection: mySQl),
+    );
   });
   group('Teste do AuthUseCase => ', () {
     test('Espero obter as informações do usuário', () async {

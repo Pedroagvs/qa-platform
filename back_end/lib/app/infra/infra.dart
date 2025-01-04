@@ -2,6 +2,7 @@ library infra;
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:back_end/app/api/api.dart';
@@ -23,6 +24,5 @@ part 'dao/aplicacoes/aplicacao_dao.dart';
 //DAO
 part 'dao/auth/auth_dao.dart';
 part 'dao/historico/historico_dao.dart';
-part 'dao/register/register_dao.dart';
 part 'dao/testes/testes_dao.dart';
 part 'dao/user/user_dao.dart';

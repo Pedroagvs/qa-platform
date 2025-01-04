@@ -1,0 +1,78 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Front Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "./test/"
+        },
+        {
+            "name": "Front - Debug",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "app/lib/main.dart",
+            "args": [
+                "--dart-define",
+                "SERVER_URL=http://127.0.0.1:8000"
+            ]
+        },
+        {
+            "name": "Front - Profile",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "/app/lib/main.dart",
+            "args": [
+                "--dart-define",
+                "SERVER_URL=http://127.0.0.1:8000"
+            ]
+        },
+        {
+            "name": "Front - Release",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "/app/lib/main.dart",
+            "args": [
+                "--dart-define",
+                "SERVER_URL=http://127.0.0.1:8000"
+            ]
+        },
+        {
+            "name": "Server Tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "./test/"
+        },
+        {
+            "name": "Server - Debug",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "back_end/bin/server.dart",
+            "env": {
+                "HOST": "localhost",
+                "PORT": "3306",
+                "USER": "admin",
+                "PASSWORD": "123456@",
+                "DB_NAME": "db_mysql_qa_platform"
+            }
+        },
+        {
+            "name": "Server - Release",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "back_end/bin/server.dart",
+            "env": {
+                "HOST": "localhost",
+                "PORT": "3306",
+                "USER": "admin",
+                "PASSWORD": "123456@",
+                "DB_NAME": "db_mysql_qa_platform"
+            }
+        },
+    ]
+}

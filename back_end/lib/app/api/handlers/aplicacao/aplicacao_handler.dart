@@ -1,5 +1,19 @@
 part of api;
 
+class AplicacaoHandler {
+  final Handler read;
+  final Handler create;
+  final Handler delete;
+  final Handler update;
+
+  AplicacaoHandler({
+    required this.create,
+    required this.delete,
+    required this.read,
+    required this.update,
+  });
+}
+
 class GetAplicacoesHandler implements Handler {
   final AplicacaoUseCase aplicacaoUseCase;
   GetAplicacoesHandler({required this.aplicacaoUseCase});
@@ -7,11 +21,10 @@ class GetAplicacoesHandler implements Handler {
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final aplicacaoDto =
-          await aplicacaoUseCase.get(requestParams: requestParams);
+      final applications = await aplicacaoUseCase.get();
       return ResponseHandler(
         statusHandler: StatusHandler.ok,
-        body: aplicacaoDto,
+        body: applications,
       );
     } catch (e, s) {
       return ResponseHandler(
@@ -41,7 +54,7 @@ class PostAplicacaoHandler implements Handler {
           await aplicacaoUseCase.create(requestParams: requestParams);
 
       return ResponseHandler(
-        statusHandler: StatusHandler.ok,
+        statusHandler: result ? StatusHandler.ok : StatusHandler.internalError,
         body: result
             ? {'mensagem': 'Aplicação criada com sucesso !!'}
             : {'mensagem': 'Falha ao criar a aplicação.'},
@@ -75,15 +88,18 @@ class DeleteAplicacoesHandler implements Handler {
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      if (requestParams.body == null || requestParams.body!.isEmpty) {
+      if (requestParams.body == null ||
+          requestParams.body!.isEmpty ||
+          requestParams.body!['idAplicacao'] == null ||
+          requestParams.body!['idAplicacao'].toString().isEmpty) {
         throw FieldsIsEmpty();
       }
       final result =
           await aplicacaoUseCase.delete(requestParams: requestParams);
       return ResponseHandler(
-        statusHandler: result ? StatusHandler.ok : StatusHandler.badRequest,
+        statusHandler: result ? StatusHandler.ok : StatusHandler.internalError,
         body: result
-            ? {'mensagem': 'Aplicação deletado criado com sucesso !!'}
+            ? {'mensagem': 'Aplicação deletada com sucesso !!'}
             : {'mensagem': 'Falha ao deletar a aplicação.'},
       );
     } on FieldsIsEmpty {
@@ -106,16 +122,22 @@ class PutAplicacaoHandler implements Handler {
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      if (requestParams.body == null || requestParams.body!.isEmpty) {
+      if (requestParams.body == null ||
+          requestParams.body!.isEmpty ||
+          requestParams.body!['idAplicacao'] == null ||
+          (requestParams.body!['titulo'] == null &&
+              requestParams.body!['plataforma'] == null) ||
+          (requestParams.body!['titulo'].toString().isEmpty &&
+              requestParams.body!['plataforma'].toString().isEmpty)) {
         throw FieldsIsEmpty();
       }
       final result =
           await aplicacaoUseCase.update(requestParams: requestParams);
       return ResponseHandler(
-        statusHandler: StatusHandler.ok,
+        statusHandler: result ? StatusHandler.ok : StatusHandler.internalError,
         body: result
-            ? {'mensagem': 'Grupo editado com sucesso !!'}
-            : {'mensagem': 'Falha ao editar o grupo.'},
+            ? {'mensagem': 'Aplicação editada com sucesso !!'}
+            : {'mensagem': 'Falha ao editar a Aplicação.'},
       );
     } on FieldsIsEmpty {
       return ResponseHandler(

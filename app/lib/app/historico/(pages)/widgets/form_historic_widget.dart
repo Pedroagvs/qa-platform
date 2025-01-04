@@ -3,9 +3,10 @@ import 'dart:typed_data';
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/states/historico_state.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/functions/regex.dart';
 import 'package:quality_assurance_platform/core/functions/show_message.dart';
@@ -33,7 +34,6 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
   Widget build(BuildContext context) {
     final historicState = useAtomState(historicStateAtom);
     final page = useAtomState(pageAtom);
-
     useAtomEffect(
       (get) => get(historicStateAtom),
       effect: (status) {
@@ -42,7 +42,7 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
           updateHistoricStatus(HistoricoStatus.initial);
           toastSuccessMessage(
             context: context,
-            description: status.msgToast,
+            description: msgAtom.state,
           );
           updateHistoricGeneric(HistoricoDto.empty());
           updateShowForm(false);
@@ -51,7 +51,7 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
             status.historicoStatus == HistoricoStatus.failureCreate) {
           toastErrorMessage(
             context: context,
-            description: status.msgToast,
+            description: msgAtom.state,
           );
           updateHistoricStatus(HistoricoStatus.initial);
         }

@@ -9,12 +9,10 @@ class HistoricoState {
   final int idAplicacao;
   final bool isEdit;
   final HistoricEntity historicEntity;
-  final String msgToast;
   const HistoricoState({
     this.historicoStatus = HistoricoStatus.initial,
     this.page = 0,
     this.idAplicacao = 0,
-    this.msgToast = '',
     this.isEdit = false,
     this.idFile = 0,
     this.historics = const [],

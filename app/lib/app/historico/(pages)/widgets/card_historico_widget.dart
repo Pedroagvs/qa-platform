@@ -1,9 +1,9 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
-import 'package:quality_assurance_platform/app/routes_atom.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/historico_entity.dart';
 import 'package:quality_assurance_platform/core/common/presentation/widgets/pop_up_delete.dart';
 import 'package:quality_assurance_platform/routes.g.dart';

@@ -2,13 +2,17 @@ part of api;
 
 class AuthController implements Controller {
   final AuthUseCase authUseCase;
-  AuthController({required this.authUseCase});
+  final AuthHandler authHandler;
+  AuthController({
+    required this.authUseCase,
+    required this.authHandler,
+  });
   @override
   String get route => '/auth';
 
   @override
   Map<String, Handler> get handler => {
-        'POST': AuthHandler(authUseCase: authUseCase),
-        'PUT /changePassword': ChangePasswordHandler(authUseCase: authUseCase),
+        'POST': authHandler.login,
+        'PUT /changePassword': authHandler.changePassword,
       };
 }

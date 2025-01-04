@@ -1,13 +1,13 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:quality_assurance_platform/app/common/user_atom.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/aplications_widget.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/config_widget.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/dashboard_widget.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/my_account_widget.dart';
 import 'package:quality_assurance_platform/app/home/controller/atoms/home_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/atoms/suites_atom.dart';
-import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/core/functions/show_message.dart';
 
 class HomePage extends StatefulWidget {

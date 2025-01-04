@@ -6,7 +6,7 @@ import 'package:get_it/get_it.dart';
 
 void injectAplicacao(GetIt getIt) {
   getIt
-    ..registerFactory<AplicacaoGateway>(
+    ..registerLazySingleton<AplicacaoGateway>(
       () => AplicacaoDAO(
         connection: getIt(),
       ),
@@ -16,9 +16,18 @@ void injectAplicacao(GetIt getIt) {
         aplicacaoGateway: getIt(),
       ),
     )
+    ..registerLazySingleton<AplicacaoHandler>(
+      () => AplicacaoHandler(
+        create: PostAplicacaoHandler(aplicacaoUseCase: getIt()),
+        delete: DeleteAplicacoesHandler(aplicacaoUseCase: getIt()),
+        read: GetAplicacoesHandler(aplicacaoUseCase: getIt()),
+        update: PutAplicacaoHandler(aplicacaoUseCase: getIt()),
+      ),
+    )
     ..registerLazySingleton<AplicacaoController>(
       () => AplicacaoController(
         aplicacaoUseCase: getIt(),
+        aplicacaoHandler: getIt(),
       ),
     );
 }

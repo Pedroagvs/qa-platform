@@ -1,35 +1,22 @@
 part of api;
 
-class HistoricoController implements Controller {
-  final HistoricoUseCase historicoUseCase;
-  HistoricoController({
-    required this.historicoUseCase,
+class HistoricController implements Controller {
+  final HistoricHandler historicHandler;
+
+  HistoricController({
+    required this.historicHandler,
   });
   @override
   String get route => '/historico';
 
   @override
   Map<String, Handler> get handler => {
-        'GET': GetHistoricoHandler(
-          historicoUseCase: historicoUseCase,
-        ),
-        'GET /downloadFile': GetDownloadFileHistoricoHandler(
-          historicoUseCase: historicoUseCase,
-        ),
-        'POST': PostHistoricosHandler(
-          historioUseCase: historicoUseCase,
-        ),
-        'POST /uploadFile': UploadFileHistoricosHandler(
-          historicoUseCase: historicoUseCase,
-        ),
-        'PUT': PutHistoricoHandler(
-          historicoUseCase: historicoUseCase,
-        ),
-        'DELETE': DeleteHistoricoHandler(
-          historicoUseCase: historicoUseCase,
-        ),
-        'DELETE /deleteFile': DeleteFileHistoricoHandler(
-          historicoUseCase: historicoUseCase,
-        ),
+        'GET': historicHandler.read,
+        'GET /downloadFile': historicHandler.getFile,
+        'POST': historicHandler.create,
+        'POST /uploadFile': historicHandler.createFile,
+        'PUT': historicHandler.update,
+        'DELETE': historicHandler.delete,
+        'DELETE /deleteFile': historicHandler.deleteFile,
       };
 }

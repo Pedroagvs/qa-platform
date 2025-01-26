@@ -1,8 +1,8 @@
 part of config;
 
 final authController = getIt.get<AuthController>();
-final aplicacaoController = getIt.get<AplicacaoController>();
-final historicoController = getIt.get<HistoricoController>();
+final aplicacaoController = getIt.get<AplicationController>();
+final historicoController = getIt.get<HistoricController>();
 final testeController = getIt.get<TesteController>();
 final userController = getIt.get<UserController>();
 final dashboardController = getIt.get<DashboardController>();

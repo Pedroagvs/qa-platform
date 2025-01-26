@@ -1,14 +1,44 @@
 import 'package:back_end/app/api/api.dart';
-import 'package:back_end/app/data/data.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class HistoricoServiceMock extends Mock implements HistoricoService {}
+class HistoricControllerMock extends Mock implements HistoricController {}
+
+class GetFileHistoricHandlerMock extends Mock
+    implements GetFileHistoricHandler {}
+
+class GetHistoricHandlerMock extends Mock implements GetHistoricHandler {}
+
+class CreateHistoricHandlerMock extends Mock implements CreateHistoricHandler {}
+
+class UpdateHistoricHandlerMock extends Mock implements UpdateHistoricHandler {}
+
+class DeleteHistoricHandlerMock extends Mock implements DeleteHistoricHandler {}
+
+class DeleteFileHistoricHandlerMock extends Mock
+    implements DeleteFileHistoricHandler {}
+
+class CreateFileHistoricHandlerMock extends Mock
+    implements CreateFileHistoricHandler {}
 
 void main() {
-  final controller = HistoricoController(
-    historicoUseCase: HistoricoServiceMock(),
-  );
+  late final HistoricController controller;
+
+  setUpAll(() {
+    controller = HistoricControllerMock();
+    when(() => controller.handler).thenReturn({
+      'GET': GetHistoricHandlerMock(),
+      'GET /downloadFile': GetFileHistoricHandlerMock(),
+      'POST': CreateHistoricHandlerMock(),
+      'POST /uploadFile': CreateFileHistoricHandlerMock(),
+      'PUT': UpdateHistoricHandlerMock(),
+      'DELETE': DeleteHistoricHandlerMock(),
+      'DELETE /deleteFile': DeleteFileHistoricHandlerMock(),
+    });
+    when(
+      () => controller.route,
+    ).thenReturn('/historico');
+  });
 
   group('Teste do HistoricoController => ', () {
     test('HistoricoController deve conter a rota /historico', () {
@@ -17,13 +47,13 @@ void main() {
     test(
         'HistoricoController deve conter uma key POST para postHistoricosHandler',
         () {
-      expect(controller.handler['POST'], isA<PostHistoricosHandler>());
+      expect(controller.handler['POST'], isA<CreateHistoricHandler>());
     });
     test('HistoricoController deve conter uma key GET para getHistoricoHandler',
         () {
       expect(
         controller.handler['GET'],
-        isA<GetHistoricoHandler>(),
+        isA<GetHistoricHandler>(),
       );
     });
     test(
@@ -31,7 +61,7 @@ void main() {
         () {
       expect(
         controller.handler['GET /downloadFile'],
-        isA<GetDownloadFileHistoricoHandler>(),
+        isA<GetFileHistoricHandlerMock>(),
       );
     });
     test(
@@ -39,7 +69,7 @@ void main() {
         () {
       expect(
         controller.handler['POST'],
-        isA<PostHistoricosHandler>(),
+        isA<CreateHistoricHandler>(),
       );
     });
     test(
@@ -47,14 +77,14 @@ void main() {
         () {
       expect(
         controller.handler['POST /uploadFile'],
-        isA<UploadFileHistoricosHandler>(),
+        isA<CreateFileHistoricHandler>(),
       );
     });
     test('HistoricoController deve conter uma key PUT para PutHistoricoHandler',
         () {
       expect(
         controller.handler['PUT'],
-        isA<PutHistoricoHandler>(),
+        isA<UpdateHistoricHandler>(),
       );
     });
     test(
@@ -62,7 +92,7 @@ void main() {
         () {
       expect(
         controller.handler['DELETE'],
-        isA<DeleteHistoricoHandler>(),
+        isA<DeleteHistoricHandler>(),
       );
     });
     test(
@@ -70,7 +100,7 @@ void main() {
         () {
       expect(
         controller.handler['DELETE /deleteFile'],
-        isA<DeleteFileHistoricoHandler>(),
+        isA<DeleteFileHistoricHandler>(),
       );
     });
   });

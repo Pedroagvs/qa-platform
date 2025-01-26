@@ -1,10 +1,8 @@
 part of api;
 
 class AuthController implements Controller {
-  final AuthUseCase authUseCase;
   final AuthHandler authHandler;
   AuthController({
-    required this.authUseCase,
     required this.authHandler,
   });
   @override

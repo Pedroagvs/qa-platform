@@ -1,6 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/atoms/suites_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/states/suites_state.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';

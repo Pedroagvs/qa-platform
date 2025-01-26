@@ -1,7 +1,7 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/aplications_widget.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/config_widget.dart';
 import 'package:quality_assurance_platform/app/home/(pages)/widgets/dashboard_widget.dart';

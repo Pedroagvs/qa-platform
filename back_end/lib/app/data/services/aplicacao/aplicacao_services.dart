@@ -1,34 +1,34 @@
 part of data;
 
-class AplicacaoService implements AplicacaoUseCase {
-  final AplicacaoGateway aplicacaoGateway;
-  AplicacaoService({
-    required this.aplicacaoGateway,
+class AplicationService implements AplicationUseCase {
+  final AplicationGateway aplicationGateway;
+  AplicationService({
+    required this.aplicationGateway,
   });
 
   @override
   Future<bool> create({
     required RequestParams requestParams,
   }) async {
-    final exists = await aplicacaoGateway.checkExistsApplication(
+    final exists = await aplicationGateway.checkExistsApplication(
       requestParams: requestParams,
     );
     if (exists) {
       return false;
     }
-    return aplicacaoGateway.create(requestParams: requestParams);
+    return aplicationGateway.create(requestParams: requestParams);
   }
 
   @override
   Future<bool> delete({
     required RequestParams requestParams,
   }) async =>
-      aplicacaoGateway.delete(requestParams: requestParams);
+      aplicationGateway.delete(requestParams: requestParams);
 
   @override
-  Future<List<AplicacaoDto>> get() async => aplicacaoGateway.get();
+  Future<List<AplicationDto>> get() async => aplicationGateway.get();
 
   @override
   Future<bool> update({required RequestParams requestParams}) async =>
-      aplicacaoGateway.update(requestParams: requestParams);
+      aplicationGateway.update(requestParams: requestParams);
 }

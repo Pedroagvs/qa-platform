@@ -2,30 +2,44 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:back_end/app/api/api.dart';
-import 'package:back_end/app/api/dto/historico_dto.dart';
+import 'package:back_end/app/api/dto/historic_dto.dart';
 import 'package:back_end/app/infra/infra.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class SQLMock extends Mock implements MySQl {}
+class MockSQL extends Mock implements MySQl {}
+
+class HistoricDAOMock extends Mock implements HistoricDAO {}
 
 void main() {
-  final historicoDAO = HistoricoDAO(connection: SQLMock());
+  late final Connection connection;
+  late final HistoricDAO historicoDAO;
+  setUpAll(() {
+    connection = MockSQL();
+    historicoDAO = HistoricDAOMock();
+    when(
+      () => connection.query(''),
+    ).thenAnswer(
+      (_) async => [
+        {'': null},
+      ],
+    );
+  });
   group('Teste do HistoricoDAO => ', () {
     test('Espero criar uma novo historico', () async {
-      when(
-        () async => historicoDAO.create(requestParams: RequestParams(body: {})),
-      ).thenAnswer((_) async => Future.value(true));
-      final result = await historicoDAO.create(
-        requestParams: RequestParams(
-          body: {
-            'idAplicacao': 1,
-            'fonte': '1.0.0',
-            'descricao': 'testesdas',
-            'criador': 'pedro',
-          },
-        ),
+      final request = RequestParams(
+        body: {
+          'idAplicacao': 1,
+          'fonte': '1.0.0',
+          'descricao': 'testesdas',
+          'criador': 'pedro',
+        },
       );
+
+      when(
+        () async => historicoDAO.create(requestParams: request),
+      ).thenAnswer((_) async => true);
+      final result = await historicoDAO.create(requestParams: request);
       expect(result, equals(true));
     });
     test('Espero criar uma novo historico', () async {
@@ -58,7 +72,7 @@ void main() {
           },
         ),
       );
-      expect(result, isA<List<HistoricoDto>>());
+      expect(result, isA<List<HistoricDto>>());
     });
 
     test('Espero atualizar um historico', () async {

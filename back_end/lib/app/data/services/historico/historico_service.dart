@@ -1,29 +1,29 @@
 part of data;
 
-class HistoricoService implements HistoricoUseCase {
-  final HistoricGateway historicoGateway;
-  final TesteGateWay testeGateWay;
-  HistoricoService({
-    required this.historicoGateway,
-    required this.testeGateWay,
+class HistoricService implements HistoricUseCase {
+  final HistoricGateway historicGateway;
+  final TestGateWay testGateWay;
+  HistoricService({
+    required this.historicGateway,
+    required this.testGateWay,
   });
 
   @override
   Future<bool> create({required RequestParams requestParams}) async =>
-      historicoGateway.create(
+      historicGateway.create(
         requestParams: requestParams,
       );
 
   @override
-  Future<List<HistoricoDto>> get({
+  Future<List<HistoricDto>> get({
     required RequestParams requestParams,
   }) async {
-    final historicos = await historicoGateway.get(
+    final historicos = await historicGateway.get(
       requestParams: requestParams,
     );
     if (historicos.isNotEmpty) {
       for (final historico in historicos) {
-        final listStatusTest = await historicoGateway.countTickets(
+        final listStatusTest = await historicGateway.countTickets(
           requestParams: RequestParams(
             body: <String, dynamic>{'idHistorico': historico.id},
           ),
@@ -54,19 +54,19 @@ class HistoricoService implements HistoricoUseCase {
 
   @override
   Future<bool> delete({required RequestParams requestParams}) async =>
-      historicoGateway.delete(
+      historicGateway.delete(
         requestParams: requestParams,
       );
 
   @override
   Future<bool> update({required RequestParams requestParams}) async =>
-      historicoGateway.update(
+      historicGateway.update(
         requestParams: requestParams,
       );
 
   @override
   Future<bool> deleteFile({required RequestParams requestParams}) async =>
-      historicoGateway.deleteFile(
+      historicGateway.deleteFile(
         requestParams: requestParams,
       );
 
@@ -74,13 +74,13 @@ class HistoricoService implements HistoricoUseCase {
   Future<Uint8List> downloadFile({
     required RequestParams requestParams,
   }) async =>
-      historicoGateway.downloadFile(
+      historicGateway.downloadFile(
         requestParams: requestParams,
       );
 
   @override
   Future<bool> uploadFile({required RequestParams requestParams}) async =>
-      historicoGateway.uploadFile(
+      historicGateway.uploadFile(
         requestParams: requestParams,
       );
 }

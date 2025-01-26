@@ -1,20 +1,47 @@
 part of api;
 
-class GetHistoricoHandler implements Handler {
-  final HistoricoUseCase historicoUseCase;
-  GetHistoricoHandler({
-    required this.historicoUseCase,
+class HistoricHandler {
+  final Handler create;
+  final Handler read;
+  final Handler update;
+  final Handler delete;
+  final Handler getFile;
+  final Handler createFile;
+  final Handler deleteFile;
+  HistoricHandler({
+    required this.create,
+    required this.read,
+    required this.update,
+    required this.delete,
+    required this.getFile,
+    required this.createFile,
+    required this.deleteFile,
+  });
+}
+
+class GetHistoricHandler implements Handler {
+  final HistoricUseCase historicUseCase;
+  GetHistoricHandler({
+    required this.historicUseCase,
   });
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result = await historicoUseCase.get(
+      if (requestParams.body == null || requestParams.body!.isEmpty) {
+        throw FieldsIsEmpty();
+      }
+      final result = await historicUseCase.get(
         requestParams: requestParams,
       );
       return ResponseHandler(
         statusHandler: StatusHandler.ok,
         body: result,
+      );
+    } on FieldsIsEmpty {
+      return ResponseHandler(
+        body: {'mensagem': 'Os campos são obrigatórios.'},
+        statusHandler: StatusHandler.badRequest,
       );
     } catch (e, s) {
       return ResponseHandler(
@@ -25,10 +52,10 @@ class GetHistoricoHandler implements Handler {
   }
 }
 
-class PostHistoricosHandler implements Handler {
-  final HistoricoUseCase historioUseCase;
-  PostHistoricosHandler({
-    required this.historioUseCase,
+class CreateHistoricHandler implements Handler {
+  final HistoricUseCase historicUseCase;
+  CreateHistoricHandler({
+    required this.historicUseCase,
   });
 
   @override
@@ -45,7 +72,7 @@ class PostHistoricosHandler implements Handler {
               requestParams.body!['formdata'] == null) {
         throw FieldsIsEmpty();
       }
-      final result = await historioUseCase.create(
+      final result = await historicUseCase.create(
         requestParams: requestParams,
       );
       return ResponseHandler(
@@ -68,16 +95,16 @@ class PostHistoricosHandler implements Handler {
   }
 }
 
-class PutHistoricoHandler implements Handler {
-  final HistoricoUseCase historicoUseCase;
-  PutHistoricoHandler({
-    required this.historicoUseCase,
+class UpdateHistoricHandler implements Handler {
+  final HistoricUseCase historicUseCase;
+  UpdateHistoricHandler({
+    required this.historicUseCase,
   });
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result = await historicoUseCase.update(
+      final result = await historicUseCase.update(
         requestParams: requestParams,
       );
       return ResponseHandler(
@@ -98,16 +125,19 @@ class PutHistoricoHandler implements Handler {
   }
 }
 
-class DeleteHistoricoHandler implements Handler {
-  final HistoricoUseCase historicoUseCase;
-  DeleteHistoricoHandler({
-    required this.historicoUseCase,
+class DeleteHistoricHandler implements Handler {
+  final HistoricUseCase historicUseCase;
+  DeleteHistoricHandler({
+    required this.historicUseCase,
   });
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result = await historicoUseCase.delete(
+      if (requestParams.body == null || requestParams.body!.isEmpty) {
+        throw FieldsIsEmpty();
+      }
+      final result = await historicUseCase.delete(
         requestParams: requestParams,
       );
       return ResponseHandler(
@@ -115,6 +145,11 @@ class DeleteHistoricoHandler implements Handler {
         body: result
             ? {'mensagem': 'Historico deletado com sucesso !!'}
             : {'mensagem': 'Houve um error ao deletar o histórico !!'},
+      );
+    } on FieldsIsEmpty {
+      return ResponseHandler(
+        statusHandler: StatusHandler.badRequest,
+        body: {'mensagem': 'Os campos são obrigatórios.'},
       );
     } catch (e, s) {
       return ResponseHandler(
@@ -128,16 +163,16 @@ class DeleteHistoricoHandler implements Handler {
   }
 }
 
-class DeleteFileHistoricoHandler implements Handler {
-  final HistoricoUseCase historicoUseCase;
-  DeleteFileHistoricoHandler({
-    required this.historicoUseCase,
+class DeleteFileHistoricHandler implements Handler {
+  final HistoricUseCase historicUseCase;
+  DeleteFileHistoricHandler({
+    required this.historicUseCase,
   });
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result = await historicoUseCase.deleteFile(
+      final result = await historicUseCase.deleteFile(
         requestParams: requestParams,
       );
       return ResponseHandler(
@@ -158,16 +193,16 @@ class DeleteFileHistoricoHandler implements Handler {
   }
 }
 
-class UploadFileHistoricosHandler implements Handler {
-  final HistoricoUseCase historicoUseCase;
-  UploadFileHistoricosHandler({
-    required this.historicoUseCase,
+class CreateFileHistoricHandler implements Handler {
+  final HistoricUseCase historicUseCase;
+  CreateFileHistoricHandler({
+    required this.historicUseCase,
   });
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result = await historicoUseCase.uploadFile(
+      final result = await historicUseCase.uploadFile(
         requestParams: requestParams,
       );
       return ResponseHandler(
@@ -188,16 +223,16 @@ class UploadFileHistoricosHandler implements Handler {
   }
 }
 
-class GetDownloadFileHistoricoHandler implements Handler {
-  final HistoricoUseCase historicoUseCase;
-  GetDownloadFileHistoricoHandler({
-    required this.historicoUseCase,
+class GetFileHistoricHandler implements Handler {
+  final HistoricUseCase historicUseCase;
+  GetFileHistoricHandler({
+    required this.historicUseCase,
   });
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final data = await historicoUseCase.downloadFile(
+      final data = await historicUseCase.downloadFile(
         requestParams: requestParams,
       );
       return ResponseHandler(

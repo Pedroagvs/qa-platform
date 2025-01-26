@@ -1,9 +1,9 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
-import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/features/login/domain/usecases/interface/auth_usecase.dart';
 
 final authUseCase = GetIt.I.get<AuthUseCase>();
@@ -12,7 +12,7 @@ final emailAtom = atom<TextEditingController>(
   TextEditingController(text: 'admin@gmail.com'),
 );
 final passwordAtom =
-    atom<TextEditingController>(TextEditingController(text: 'Senha123@'));
+    atom<TextEditingController>(TextEditingController(text: 'senha123'));
 
 final obscureTextAtom = atom<bool>(true);
 

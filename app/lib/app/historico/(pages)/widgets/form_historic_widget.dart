@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/states/historico_state.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
@@ -123,9 +123,9 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
               ),
             ),
             Visibility(
-              visible: historicState.historicEntity.arquivoEntity != null &&
-                  historicState.historicEntity.arquivoEntity!.nome.isNotEmpty &&
-                  historicState.historicEntity.arquivoEntity!.path.isNotEmpty,
+              visible: historicState.historicEntity.fileDto != null &&
+                  historicState.historicEntity.fileDto!.name.isNotEmpty &&
+                  historicState.historicEntity.fileDto!.path.isNotEmpty,
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -142,8 +142,7 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
                               padding: const EdgeInsets.all(2),
                               child: Visibility(
                                 visible: !RegexApp.isImage(
-                                  historicState
-                                          .historicEntity.arquivoEntity?.nome ??
+                                  historicState.historicEntity.fileDto?.name ??
                                       '',
                                 ),
                                 replacement:
@@ -151,8 +150,8 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: Image.memory(
-                                    historicState.historicEntity.arquivoEntity
-                                            ?.bytes ??
+                                    historicState
+                                            .historicEntity.fileDto?.bytes ??
                                         Uint8List.fromList([]),
                                     fit: BoxFit.contain,
                                   ),
@@ -162,9 +161,7 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
                           ),
                           Flexible(
                             child: Text(
-                              historicState
-                                      .historicEntity.arquivoEntity?.nome ??
-                                  '',
+                              historicState.historicEntity.fileDto?.name ?? '',
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -180,15 +177,14 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
                               label: const Text('Excluir'),
                               onPressed: () {
                                 if (historicState.isEdit &&
-                                    historicState
-                                            .historicEntity.arquivoEntity?.id !=
+                                    historicState.historicEntity.fileDto?.id !=
                                         -1) {
                                   deleteFileHistoric(
                                     historicState.historicEntity.idHistorico ??
                                         0,
                                   );
                                 }
-                                updateFile(ArquivoDto.empty());
+                                updateFile(FileDto.empty());
                               },
                             ),
                           ),
@@ -230,7 +226,7 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
                                   historicState.historicEntity.source,
                                   historicState.historicEntity.feature,
                                   widget.titleApplication,
-                                  historicState.historicEntity.arquivoEntity
+                                  historicState.historicEntity.fileDto
                                 ),
                               );
                             }
@@ -267,7 +263,7 @@ class _FormHistoricWidgetState extends State<FormHistoricWidget>
                   children: [
                     OutlinedButton.icon(
                       onPressed: () {
-                        updateFile(ArquivoDto.empty());
+                        updateFile(FileDto.empty());
                         updateHistoricGeneric(HistoricoDto.empty());
                         updateIsEdit(false);
                         updateShowForm(false);

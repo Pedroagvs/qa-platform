@@ -1,6 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/list_arquivos_teste.dart';
 import 'package:quality_assurance_platform/app/testes/controller/atom/teste_atom.dart';
 import 'package:quality_assurance_platform/app/testes/controller/states/testes_state.dart';
@@ -291,7 +291,7 @@ class _FormNewTestPageState extends State<FormNewTestPage>
                                 situacaoTeste: SituacaoTeste.pendente,
                                 descricao: controllerDescricao.text,
                                 passos: controllerPassos.text,
-                                arquivos: testeState.cacheFiles,
+                                files: testeState.cacheFiles,
                                 observacoes: controllerObservacao.text,
                                 loginTeste: controllerLogin.text,
                                 senhaTeste: controllerSenha.text,

@@ -1,19 +1,16 @@
-import 'dart:typed_data';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:quality_assurance_platform/app/common/widgets/file_widget.dart';
 import 'package:quality_assurance_platform/app/testes/controller/atom/teste_atom.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 
 class ListArquivosTeste extends StatelessWidget {
-  final List<ArquivoEntity> files;
-  final void Function()? delete;
-  final bool isLoading;
+  final List<FileDto> files;
+  final int testId;
   const ListArquivosTeste({
     super.key,
     required this.files,
-    required this.delete,
-    this.isLoading = false,
+    required this.testId,
   });
 
   @override
@@ -66,22 +63,15 @@ class ListArquivosTeste extends StatelessWidget {
                                         horizontal: 3,
                                       ),
                                       child: Visibility(
-                                        visible: isLoading,
+                                        visible: f.downloading,
                                         replacement: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          child: f.bytes != null
-                                              ? Image.memory(
-                                                  f.bytes ??
-                                                      Uint8List.fromList([]),
-                                                )
-                                              : const Icon(
-                                                  Icons.file_present_rounded,
-                                                  size: 48,
-                                                ),
+                                          child: FileWidget(fileDto: f),
                                         ),
-                                        child:
-                                            const CircularProgressIndicator(),
+                                        child: CircularProgressIndicator(
+                                          value: f.progress,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -90,31 +80,43 @@ class ListArquivosTeste extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8),
                                     child: Text(
-                                      f.nome,
+                                      f.name,
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 12,
-                                    ),
-                                    child: OutlinedButton.icon(
-                                      label: const Text('Remover'),
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                        ),
+                                        child: OutlinedButton.icon(
+                                          label: const Text('Remover'),
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            deleteFile(
+                                              testId,
+                                              f.id,
+                                            );
+                                          },
+                                        ),
                                       ),
-                                      onPressed: () {
-                                        if (delete != null) {
-                                          delete?.call();
-                                        } else {
-                                          removeFileInCache(f.nome);
-                                        }
-                                      },
                                     ),
-                                  ),
+                                    OutlinedButton.icon(
+                                      label: const Text('Baixar'),
+                                      icon: const Icon(
+                                        Icons.download,
+                                      ),
+                                      onPressed: () => downloadFile(
+                                        f,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

@@ -20,6 +20,6 @@ part 'handlers/aplicacao/aplicacao_handler.dart';
 part 'handlers/auth/auth_handler.dart';
 part 'handlers/dasboard/dashboard_handler.dart';
 part 'handlers/handler.dart';
-part 'handlers/historico/historico_handler.dart';
+part 'handlers/historico/historic_handler.dart';
 part 'handlers/teste/teste_handler.dart';
 part 'handlers/user/user_handler.dart';

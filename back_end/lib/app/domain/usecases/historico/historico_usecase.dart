@@ -1,7 +1,7 @@
 part of domain;
 
-abstract class HistoricoUseCase {
-  Future<List<HistoricoDto>> get({
+abstract class HistoricUseCase {
+  Future<List<HistoricDto>> get({
     required RequestParams requestParams,
   });
   Future<bool> create({required RequestParams requestParams});

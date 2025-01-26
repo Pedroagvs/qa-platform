@@ -1,8 +1,8 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/historico_entity.dart';
 import 'package:quality_assurance_platform/core/common/presentation/widgets/pop_up_delete.dart';
@@ -128,7 +128,7 @@ class CardHistorico extends StatelessWidget with HookMixin {
                               ),
                             ),
                           PopupMenuItem<String>(
-                            enabled: historico.arquivoEntity != null,
+                            enabled: historico.fileDto != null,
                             value: 'download',
                             child: const ListTile(
                               leading: Text('Baixar arquivo'),
@@ -187,8 +187,8 @@ class CardHistorico extends StatelessWidget with HookMixin {
                         } else if (value.contains('download')) {
                           getFileHistoric(
                             historico.idHistorico ?? 0,
-                            historico.arquivoEntity?.id ?? 0,
-                            historico.arquivoEntity?.nome ?? 'sem nome',
+                            historico.fileDto?.id ?? 0,
+                            historico.fileDto?.name ?? 'sem nome',
                           );
                         } else if (value.contains('editar')) {
                           updateHistoricGeneric(
@@ -198,7 +198,7 @@ class CardHistorico extends StatelessWidget with HookMixin {
                               source: historico.source,
                               feature: historico.feature,
                               dataCadastro: historico.dataCadastro,
-                              arquivoEntity: historico.arquivoEntity,
+                              fileDto: historico.fileDto,
                             ),
                           );
                           updateIsEdit(true);

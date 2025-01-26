@@ -1,7 +1,7 @@
 part of data;
 
-abstract class TesteGateWay {
-  Future<List<TesteDto>> get({
+abstract class TestGateWay {
+  Future<List<TestDto>> get({
     required RequestParams requestParams,
   });
   Future<bool> create({

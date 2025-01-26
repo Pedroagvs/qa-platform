@@ -1,6 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
 import 'package:quality_assurance_platform/app/login/(pages)/widgets/form_create_account_widget.dart';
 import 'package:quality_assurance_platform/app/login/(pages)/widgets/form_login_widget.dart';
 import 'package:quality_assurance_platform/app/login/(pages)/widgets/form_lost_password_widget.dart';

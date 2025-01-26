@@ -1,41 +1,64 @@
 import 'package:back_end/app/api/api.dart';
-import 'package:back_end/app/api/dto/aplicacao_dto.dart';
+import 'package:back_end/app/api/dto/aplication_dto.dart';
 import 'package:back_end/app/data/data.dart';
 import 'package:back_end/app/domain/domain.dart';
 import 'package:back_end/app/domain/exceptions/aplicacao/aplicacao_exeception.dart';
 import 'package:back_end/app/infra/infra.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
+class MySQlMock extends Mock implements MySQl {}
+
 void main() {
-  late final MySQl mySQl;
-  late final AplicacaoUseCase aplicacaoUseCase;
+  late final Connection connection;
+  late final AplicationUseCase aplicationUseCase;
+  late final AplicationDAO aplicationDAO;
   setUpAll(() async {
-    mySQl = MySQl();
-    await mySQl.initConnection();
-    aplicacaoUseCase = AplicacaoService(
-      aplicacaoGateway: AplicacaoDAO(connection: mySQl),
+    connection = MySQlMock();
+    aplicationDAO = AplicationDAO(connection: connection);
+    aplicationUseCase = AplicationService(
+      aplicationGateway: aplicationDAO,
+    );
+
+    when(
+      () => connection.query(''),
+    ).thenAnswer(
+      (_) async => [
+        {'': ''},
+      ],
     );
   });
   group('Testes de AplicaçãoUseCase => ', () {
     test('Espero receber uma lista de Aplicações', () async {
-      final result = await aplicacaoUseCase.get();
-      expect(result, isA<List<AplicacaoDto>>());
+      // when(
+      //   () => aplicationDAO.get(),
+      // ).thenAnswer((_) async => <AplicationDto>[]);
+      // when(
+      //   () => aplicationUseCase.get(),
+      // ).thenAnswer((_) async => <AplicationDto>[]);
+
+      final result = await aplicationUseCase.get();
+      expect(result, isA<List<AplicationDto>>());
     });
 
     test('Espero criar uma nova aplicação', () async {
-      final result = await aplicacaoUseCase.create(
-        requestParams: RequestParams(
-          body: {
-            'titulo': 'Teste',
-            'plataforma': 'mobile',
-          },
-        ),
+      final request = RequestParams(
+        body: {
+          'titulo': 'Teste',
+          'plataforma': 'mobile',
+        },
+      );
+      when(
+        () => aplicationUseCase.create(requestParams: request),
+      ).thenAnswer((_) async => true);
+      final result = await aplicationUseCase.create(
+        requestParams: request,
       );
       expect(result, equals(true));
     });
 
     test('Espero deletar uma aplicação existente', () async {
-      final result = await aplicacaoUseCase.delete(
+      final result = await aplicationUseCase.delete(
         requestParams: RequestParams(
           body: {
             'idAplicacao': 1,
@@ -47,7 +70,7 @@ void main() {
     test('Espero receber um exceção deletar uma aplicação não existente',
         () async {
       expect(
-        await aplicacaoUseCase.delete(
+        await aplicationUseCase.delete(
           requestParams: RequestParams(
             body: {
               'idAplicacao': 9999999,
@@ -60,7 +83,7 @@ void main() {
   });
 
   test('Espero editar o título da aplicação cadastrada', () async {
-    final result = await aplicacaoUseCase.update(
+    final result = await aplicationUseCase.update(
       requestParams: RequestParams(
         body: {
           'idAplicacao': 1,

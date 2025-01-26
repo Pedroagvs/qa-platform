@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/teste_dto.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 
@@ -20,7 +20,7 @@ abstract class TesteRepository {
   });
   Future<({Failure? failure, bool? success})> uploadArquivos({
     required int idTeste,
-    required List<ArquivoEntity> arquivos,
+    required List<FileDto> files,
     required void Function(int, int)? onProgress,
   });
   Future<({Uint8List? bytes, Failure? failure})> downloadArquivos({

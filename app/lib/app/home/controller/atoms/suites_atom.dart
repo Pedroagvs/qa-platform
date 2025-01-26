@@ -1,6 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/states/suites_state.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/application_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';

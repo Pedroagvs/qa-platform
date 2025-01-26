@@ -28,7 +28,6 @@ void injectAuth(GetIt getIt) {
     )
     ..registerLazySingleton<AuthController>(
       () => AuthController(
-        authUseCase: getIt(),
         authHandler: getIt(),
       ),
     );

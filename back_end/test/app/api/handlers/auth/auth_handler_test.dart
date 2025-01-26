@@ -1,6 +1,8 @@
 import 'package:back_end/app/api/api.dart';
 import 'package:back_end/app/api/dto/user_dto.dart';
 import 'package:back_end/app/data/data.dart';
+import 'package:back_end/app/domain/exceptions/common/common_exceptions.dart';
+import 'package:back_end/app/domain/exceptions/register/register_exceptions.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
@@ -11,7 +13,6 @@ class AuthGatewayMock extends Mock implements AuthGateway {}
 class UserGatewayMock extends Mock implements UserGateway {}
 
 void main() {
-  final mockUserGateWay = UserGatewayMock();
   final mockAuthGateWay = AuthGatewayMock();
   final mockAuthService = AuthServiceMock();
   final authHandler = AuthHandler(
@@ -130,7 +131,7 @@ void main() {
       expect(responseHandler.statusHandler, StatusHandler.badRequest);
     });
 
-    test('Deve retornar um boolean', () async {
+    test('Espero receber StatusHandler.ok para um nova conta', () async {
       final requestParams = RequestParams(
         body: {
           'idUser': 'teste@gmail.com',
@@ -163,16 +164,10 @@ void main() {
           'novaSenha': 'senha123@',
         },
       );
+
       when(
-        () => mockAuthGateWay.changePassword(requestParams: requestParams),
+        () => mockAuthService.changePassword(requestParams: requestParams),
       ).thenAnswer((_) async => false);
-      when(
-        () => mockAuthService.changePassword(
-          requestParams: requestParams,
-        ),
-      ).thenAnswer(
-        (_) async => false,
-      );
       final responseHandler = await authHandler.changePassword(
         requestParams: requestParams,
       );
@@ -188,18 +183,8 @@ void main() {
         },
       );
       when(
-        () => mockUserGateWay.getUserByEmail(requestParams: requestParams),
-      ).thenAnswer((_) async => false);
-      when(
-        () => mockAuthGateWay.createAccount(requestParams: requestParams),
+        () => mockAuthService.createAccount(requestParams: requestParams),
       ).thenAnswer((_) async => true);
-      when(
-        () => mockAuthService.createAccount(
-          requestParams: requestParams,
-        ),
-      ).thenAnswer(
-        (_) async => true,
-      );
       final responseHandler = await authHandler.createAccount(
         requestParams: requestParams,
       );
@@ -219,29 +204,19 @@ void main() {
           'cargo': 'tester',
         },
       );
+
       when(
-        () => mockUserGateWay.getUserByEmail(requestParams: requestParams),
-      ).thenAnswer((_) async => true);
-      when(
-        () => mockAuthGateWay.createAccount(requestParams: requestParams),
-      ).thenAnswer((_) async => true);
-      when(
-        () => mockAuthService.createAccount(
-          requestParams: requestParams,
-        ),
-      ).thenAnswer(
-        (_) async => true,
-      );
-      final responseHandler = await authHandler.createAccount(
-        requestParams: requestParams,
-      );
+        () => mockAuthService.createAccount(requestParams: requestParams),
+      ).thenThrow(EmailAlreadyRegistered());
+      final responseHandler =
+          await authHandler.createAccount(requestParams: requestParams);
       expect(responseHandler.statusHandler, StatusHandler.badRequest);
       expect(
         responseHandler.body,
         containsPair('mensagem', 'E-mail já cadastrado !!.'),
       );
     });
-    test('Espero receber StatusHandler.badRequest para um e-mail ja cadastrado',
+    test('Espero receber StatusHandler.badRequest para campos vazios',
         () async {
       final requestParams = RequestParams(
         body: {
@@ -251,19 +226,10 @@ void main() {
           'cargo': '',
         },
       );
+
       when(
-        () => mockUserGateWay.getUserByEmail(requestParams: requestParams),
-      ).thenAnswer((_) async => false);
-      when(
-        () => mockAuthGateWay.createAccount(requestParams: requestParams),
-      ).thenAnswer((_) async => true);
-      when(
-        () => mockAuthService.createAccount(
-          requestParams: requestParams,
-        ),
-      ).thenAnswer(
-        (_) async => true,
-      );
+        () => mockAuthService.createAccount(requestParams: requestParams),
+      ).thenThrow(FieldsIsEmpty());
       final responseHandler = await authHandler.createAccount(
         requestParams: requestParams,
       );
@@ -283,26 +249,17 @@ void main() {
           'cargo': 'asd',
         },
       );
+
       when(
-        () => mockUserGateWay.getUserByEmail(requestParams: requestParams),
-      ).thenAnswer((_) async => false);
-      when(
-        () => mockAuthGateWay.createAccount(requestParams: requestParams),
-      ).thenAnswer((_) async => true);
-      when(
-        () => mockAuthService.createAccount(
-          requestParams: requestParams,
-        ),
-      ).thenAnswer(
-        (_) async => true,
-      );
+        () => mockAuthService.createAccount(requestParams: requestParams),
+      ).thenThrow(InvalidEmail());
       final responseHandler = await authHandler.createAccount(
         requestParams: requestParams,
       );
       expect(responseHandler.statusHandler, StatusHandler.badRequest);
       expect(
         responseHandler.body,
-        containsPair('mensagem', 'Todos os campos são obrigatórios.'),
+        containsPair('mensagem', 'E-mail inválido !!'),
       );
     });
   });

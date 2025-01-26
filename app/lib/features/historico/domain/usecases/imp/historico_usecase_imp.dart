@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/historico/data/dto/historico_dto.dart';
 import 'package:quality_assurance_platform/features/historico/domain/repositories/historico_repository.dart';
@@ -10,59 +10,59 @@ class HistoricoUseCaseImp implements HistoricoUsecase {
   final HistoricoRepository _repository;
   HistoricoUseCaseImp(this._repository);
   @override
-  Future<({Failure? failure, String? message})> createHistorico({
+  Future<({Failure? failure, String? message})> createHistoric({
     required int idAplicacao,
     required String creatorName,
     required String versionAppOrBranch,
     required String featuresTestadas,
     required String aplicacao,
-    ArquivoEntity? arquivoEntity,
+    FileDto? fileDto,
   }) {
-    return _repository.createHistorico(
+    return _repository.createHistoric(
       idAplicacao: idAplicacao,
       creatorName: creatorName,
       featuresTestadas: featuresTestadas,
       versionAppOrBranch: versionAppOrBranch,
       aplicacao: aplicacao,
-      arquivoEntity: arquivoEntity,
+      fileDto: fileDto,
     );
   }
 
   @override
-  Future<({Failure? failure, String? message})> deleteHistorico({
+  Future<({Failure? failure, String? message})> deleteHistoric({
     required int idHistorico,
     required int idAplicacao,
   }) {
-    return _repository.deleteHistorico(
+    return _repository.deleteHistoric(
       idHistorico: idHistorico,
       idAplicacao: idAplicacao,
     );
   }
 
   @override
-  Future<({Failure? failure, List<HistoricoDto>? historicos})> getHistoricos({
+  Future<({Failure? failure, List<HistoricoDto>? historicos})> getHistorics({
     required int offset,
     required int idAplicacao,
   }) {
-    return _repository.getHistoricos(
+    return _repository.getHistorics(
       offset: offset,
       idAplicacao: idAplicacao,
     );
   }
 
   @override
-  Future<({Failure? failure, String? message})> uploadFileHistorico(
+  Future<({Failure? failure, String? message})> uploadFileHistoric(
     int idHistorico,
-    ArquivoEntity arquivoEntity,
+    FileDto fileDto,
   ) async {
-    return _repository.uploadFileHistorico(idHistorico, arquivoEntity);
+    return _repository.uploadFileHistoric(idHistorico, fileDto);
   }
 
   @override
-  Future<({Failure? failure, String? message})> deleteFileHistorico(
+  Future<({Failure? failure, String? message})> deleteFileHistoric(
     int idHistorico,
   ) async {
-    return _repository.deleteFileHistorico(idHistorico);
+    return _repository.deleteFileHistoric(idHistorico);
   }
 
   @override
@@ -73,11 +73,11 @@ class HistoricoUseCaseImp implements HistoricoUsecase {
   }
 
   @override
-  Future<({Uint8List? bytes, Failure? failure})> downloadFileHistorico({
+  Future<({Uint8List? bytes, Failure? failure})> downloadFileHistoric({
     required int idArquivo,
     required int idHistorico,
   }) async =>
-      _repository.downloadFileHistorico(
+      _repository.downloadFileHistoric(
         idArquivo: idArquivo,
         idHistorico: idHistorico,
       );

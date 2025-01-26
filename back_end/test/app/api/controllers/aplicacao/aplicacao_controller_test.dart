@@ -1,45 +1,70 @@
 import 'package:back_end/app/api/api.dart';
-import 'package:back_end/app/data/data.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class AplicacaoServiceMock extends Mock implements AplicacaoService {}
+class AplicationHandlerMock extends Mock implements AplicationHandler {}
 
-class AplicacaoHandlerMock extends Mock implements AplicacaoHandler {}
+class AplicationControllerMock extends Mock implements AplicationController {}
+
+class CreateAplicationHandlerMock extends Mock
+    implements CreateAplicationHandler {}
+
+class GetApplicationsHandlerMock extends Mock
+    implements GetApplicationsHandler {}
+
+class UpdateAplicationHandlerMock extends Mock
+    implements UpdateAplicationHandler {}
+
+class DeleteAplicationHandlerMock extends Mock
+    implements DeleteAplicationHandler {}
 
 void main() {
-  final controller = AplicacaoController(
-    aplicacaoUseCase: AplicacaoServiceMock(),
-    aplicacaoHandler: AplicacaoHandlerMock(),
-  );
+  late final AplicationController controller;
+  setUpAll(() {
+    controller = AplicationControllerMock();
+    when(
+      () => controller.handler,
+    ).thenReturn({
+      'POST': CreateAplicationHandlerMock(),
+      'GET': GetApplicationsHandlerMock(),
+      'PUT': UpdateAplicationHandlerMock(),
+      'DELETE': DeleteAplicationHandlerMock(),
+    });
+    when(
+      () => controller.route,
+    ).thenReturn('/aplicacao');
+  });
 
   group('Test do AplicacaoController => ', () {
     test('AplicacaoController deve conter a rota /aplicacao', () {
       expect(controller.route, equals('/aplicacao'));
     });
+    test('AplicacaoController deve conter o map de strings e handlers', () {
+      expect(controller.handler, isA<Map<String, Handler>>());
+    });
     test('AplicacaoController deve conter um metodo PostAplicacaoHandler', () {
       expect(
         controller.handler['POST'],
-        isA<PostAplicacaoHandler>(),
+        isA<CreateAplicationHandler>(),
       );
     });
     test('AplicacaoController deve conter um metodo GetAplicacoesHandler', () {
       expect(
         controller.handler['GET'],
-        isA<GetAplicacoesHandler>(),
+        isA<GetApplicationsHandler>(),
       );
     });
     test('AplicacaoController deve conter um metodo DeleteAplicacoesHandler',
         () {
       expect(
         controller.handler['DELETE'],
-        isA<DeleteAplicacoesHandler>(),
+        isA<DeleteAplicationHandler>(),
       );
     });
     test('AplicacaoController deve conter um metodo PutAplicacaoHandler', () {
       expect(
         controller.handler['PUT'],
-        isA<PutAplicacaoHandler>(),
+        isA<UpdateAplicationHandler>(),
       );
     });
   });

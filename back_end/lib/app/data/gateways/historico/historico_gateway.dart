@@ -1,7 +1,7 @@
 part of data;
 
 abstract class HistoricGateway {
-  Future<List<HistoricoDto>> get({
+  Future<List<HistoricDto>> get({
     required RequestParams requestParams,
   });
 

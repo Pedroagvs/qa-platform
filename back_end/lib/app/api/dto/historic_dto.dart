@@ -1,6 +1,6 @@
 import 'package:back_end/app/api/dto/arquivo_dto.dart';
 
-class HistoricoDto {
+class HistoricDto {
   int? id;
   final String creatorName;
   final String versionApp;
@@ -10,7 +10,7 @@ class HistoricoDto {
   ArquivoDto? arquivoDto;
   int closedTickets;
   int openedTickets;
-  HistoricoDto({
+  HistoricDto({
     this.id,
     required this.creatorName,
     required this.versionApp,
@@ -36,10 +36,10 @@ class HistoricoDto {
     };
   }
 
-  factory HistoricoDto.fromJson(
+  factory HistoricDto.fromJson(
     Map<String, dynamic> map,
   ) {
-    return HistoricoDto(
+    return HistoricDto(
       id: map['id'] != null ? int.parse(map['id']) : null,
       creatorName: map['criador'] as String,
       dataCadastro: map['dataCadastro'] as String,

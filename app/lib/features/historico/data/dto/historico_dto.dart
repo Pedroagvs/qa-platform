@@ -12,7 +12,7 @@ class HistoricoDto extends HistoricEntity {
     required super.closedTickets,
     required super.openedTickets,
     required super.closed,
-    super.arquivoEntity,
+    super.fileDto,
   });
 
   factory HistoricoDto.fromJson(
@@ -27,8 +27,8 @@ class HistoricoDto extends HistoricEntity {
               DateFormat('yyyy-MM-dd').parse(json['dataCadastro']),
             )
           : '',
-      arquivoEntity:
-          json['arquivo'] != null ? ArquivoDto.fromJson(json['arquivo']) : null,
+      fileDto:
+          json['arquivo'] != null ? FileDto.fromJson(json['arquivo']) : null,
       idHistorico: json['id'] ?? -1,
       openedTickets: json['testesAbertos'] ?? 0,
       closedTickets: json['testesFechados'] ?? 0,

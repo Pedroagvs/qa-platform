@@ -5,15 +5,15 @@ import 'package:test/test.dart';
 import '../../../../common_mock.dart';
 
 void main() {
-  late final AplicacaoDAO aplicacaoDAO;
+  late final AplicationDAO aplicationDAO;
   late final MySQl mySQl;
   setUpAll(() async {
     mySQl = MySQLMock();
-    aplicacaoDAO = AplicacaoDAO(connection: mySQl);
+    aplicationDAO = AplicationDAO(connection: mySQl);
   });
   group('Teste do TesteDAO => ', () {
     test('Espero salvar uma aplicação no banco de dados.', () async {
-      final result = await aplicacaoDAO.create(
+      final result = await aplicationDAO.create(
         requestParams: RequestParams(
           body: {
             'titulo': 'teste2',
@@ -24,7 +24,7 @@ void main() {
       expect(result, equals(true));
     });
     test('Espero editar uma aplicação no banco de dados.', () async {
-      final result = await aplicacaoDAO.update(
+      final result = await aplicationDAO.update(
         requestParams: RequestParams(
           body: {
             'idAplicacao': 1,
@@ -37,7 +37,7 @@ void main() {
     });
   });
   test('Espero deletar uma aplicação ja existente', () async {
-    final result = await aplicacaoDAO.delete(
+    final result = await aplicationDAO.delete(
       requestParams: RequestParams(
         body: {
           'idAplicacao': 1,

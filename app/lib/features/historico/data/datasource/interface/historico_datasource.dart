@@ -1,35 +1,36 @@
 import 'dart:typed_data';
 
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/features/historico/data/dto/historico_dto.dart';
 
 abstract class HistoricoDataSource {
-  Future<List<HistoricoDto>> getHistoricos({
+  Future<List<HistoricoDto>> getHistorics({
     required int offset,
     required int idAplicacao,
   });
-  Future<String> createHistorico({
+  Future<String> createHistoric({
     required int idAplicacao,
     required String creatorName,
     required String versionAppOrBranch,
     required String featuresTestadas,
     required String aplicacao,
-    ArquivoEntity? arquivoEntity,
+    FileDto? fileDto,
   });
 
-  Future<String> deleteHistorico({
+  Future<String> deleteHistoric({
     required int idHistorico,
     required int idAplicacao,
   });
-  Future<String> deleteFileHistorico(int idHistorico);
-  Future<String> uploadFileHistorico(
+  Future<String> deleteFileHistoric(int idHistorico);
+
+  Future<String> uploadFileHistoric(
     int idHistorico,
-    ArquivoEntity arquivoEntity,
+    FileDto fileDto,
   );
 
   Future<String> update(Map<String, dynamic> mapUpdate);
 
-  Future<Uint8List> donwloadFileHistorico({
+  Future<Uint8List> donwloadFileHistoric({
     required int idArquivo,
     required int idHistorico,
   });

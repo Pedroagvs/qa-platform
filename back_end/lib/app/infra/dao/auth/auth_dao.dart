@@ -18,7 +18,7 @@ class AuthDAO implements AuthGateway {
 
       final row = await connection.query(
         '''
-      SELECT u.nome, u.id, u.email, u.thumbnail, c.nome AS cargo, GROUP_CONCAT(f.nome SEPARATOR ',') AS funcionalidades
+      SELECT u.nome, u.id, u.email, c.nome AS cargo, GROUP_CONCAT(f.nome SEPARATOR ',') AS funcionalidades
       FROM tb_user u
       JOIN tb_usuarios_cargos uc ON u.id = uc.user_id
       JOIN tb_cargos c ON uc.cargo_id = c.id

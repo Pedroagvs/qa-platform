@@ -2,11 +2,10 @@ import 'dart:developer';
 
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
 import 'package:quality_assurance_platform/app/testes/controller/states/testes_state.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/teste_dto.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/user_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/usecases/interface/users_usecase.dart';
@@ -17,7 +16,7 @@ import 'package:quality_assurance_platform/features/testes/domain/usecase/interf
 final testeUseCase = GetIt.I.get<TesteUseCase>();
 final userUserCase = GetIt.I.get<UsersUseCase>();
 final anexarArquivosService = GetIt.I.get<AnexarArquivosService>();
-final cacheFilesAtom = atom<List<ArquivoEntity>>([]);
+final cacheFilesAtom = atom<List<FileDto>>([]);
 final selectedTestAtom = atom<TesteEntity>(TesteDto.empty());
 final statusTestesAtom = atom<StatusTestes>(StatusTestes.initial);
 final filterSituationAtom = atom<SituacaoTeste>(SituacaoTeste.todos);
@@ -96,7 +95,7 @@ final getFiles = atomAction((set) async {
   set(statusTestesAtom, StatusTestes.anexandoArquivos);
   final files = await anexarArquivosService.buscarArquivos();
   final cachedFiles = cacheFilesAtom.state
-    ..addAll(files.map((e) => ArquivoDto.fromJson(e)).toList());
+    ..addAll(files.map((e) => FileDto.fromJson(e)).toList());
   set(cacheFilesAtom, cachedFiles);
   set(statusTestesAtom, StatusTestes.initial);
 });
@@ -104,11 +103,11 @@ final getFiles = atomAction((set) async {
 final updateFilesTestSelected = atomAction((set) async {
   set(statusTestesAtom, StatusTestes.loadingUploadFiles);
   final result = await anexarArquivosService.buscarArquivos();
-  final files = result.map((e) => ArquivoDto.fromJson(e)).toList();
+  final files = result.map((e) => FileDto.fromJson(e)).toList();
   final testSelected = selectedTestAtom.state;
   final record = await testeUseCase.uploadArquivos(
     idTeste: testSelected.id,
-    arquivos: files,
+    files: files,
     onProgress: (int totalBytes, int currentBytes) {
       log((currentBytes / totalBytes * 100).round().toString());
     },
@@ -117,14 +116,14 @@ final updateFilesTestSelected = atomAction((set) async {
     set(statusTestesAtom, StatusTestes.failureUploadFiles);
   } else if (record.success != null) {
     set(statusTestesAtom, StatusTestes.successUploadFiles);
-    testSelected.arquivos.addAll(files);
+    testSelected.files.addAll(files);
   }
 });
 
 final removeFileInCache = atomAction1<String>((set, nameFile) {
   set(statusTestesAtom, StatusTestes.removendoArquivo);
   final cachedFiles = cacheFilesAtom.state
-    ..removeWhere((f) => f.nome == nameFile);
+    ..removeWhere((f) => f.name == nameFile);
   set(cacheFilesAtom, cachedFiles);
   set(statusTestesAtom, StatusTestes.initial);
 });
@@ -151,7 +150,7 @@ final createTicketTeste =
   if (record.failure != null) {
     set(statusTestesAtom, StatusTestes.failureCreateTeste);
   } else if (record.success != null) {
-    set(cacheFilesAtom, <ArquivoEntity>[]);
+    set(cacheFilesAtom, <FileDto>[]);
     set(statusTestesAtom, StatusTestes.successCreateTeste);
   }
 });
@@ -218,25 +217,30 @@ final getFilesTest = atomAction1<int>((
   set,
   idTeste,
 ) async {
-  final files = selectedTestAtom.state.arquivos;
-  if (files.any((f) => f.bytes == null)) {
-    for (final file in files) {
-      set(statusTestesAtom, StatusTestes.loadingDownloadFile);
-      final record = await testeUseCase.downloadArquivos(
-        idTeste: idTeste,
-        idArquivo: file.id,
-        onProgress: (int totalBytes, int currentBytes) {
-          log((currentBytes / totalBytes * 100).round().toString());
-        },
-      );
-      if (record.failure != null) {
-        set(statusTestesAtom, StatusTestes.failureDownloadFile);
-      } else if (record.bytes != null) {
-        file.bytes = record.bytes;
-        set(statusTestesAtom, StatusTestes.successDownloadFile);
-      }
-    }
-  }
+  await Future.wait(
+    selectedTestAtom.state.files
+        .where((f1) => f1.bytes == null)
+        .toList()
+        .map(
+          (f2) async => testeUseCase
+              .downloadArquivos(
+            idTeste: idTeste,
+            idArquivo: f2.id,
+            onProgress: (int totalBytes, int currentBytes) {
+              log((currentBytes / totalBytes * 100).round().toString());
+            },
+          )
+              .then((record) {
+            if (record.failure != null) {
+              set(statusTestesAtom, StatusTestes.failureDownloadFile);
+            } else if (record.bytes != null) {
+              f2.bytes = record.bytes;
+              set(statusTestesAtom, StatusTestes.successDownloadFile);
+            }
+          }),
+        )
+        .toList(),
+  );
 });
 
 final deleteTicketTest =
@@ -270,15 +274,15 @@ final showInfoDialog = atomAction((set) {
 
 final downloadAllFiles = atomAction(key: 'downloadAllFiles', (set) async {
   final test = selectedTestAtom.state;
-  final files = test.arquivos.where((f) => f.bytes != null).toList();
+  final files = test.files.where((f) => f.bytes != null).toList();
   for (final f in files) {
-    HtmlService.donwloadFile(f.nome, f.bytes!);
+    HtmlService.donwloadFile(f.name, f.bytes!);
   }
 });
 
 final downloadFile =
-    atomAction1<ArquivoEntity>(key: 'downloadFile', (set, file) async {
-  HtmlService.donwloadFile(file.nome, file.bytes!);
+    atomAction1<FileDto>(key: 'downloadFile', (set, file) async {
+  HtmlService.donwloadFile(file.name, file.bytes!);
 });
 
 final filterTestsBySituation = atomAction1<SituacaoTeste>((set, situation) {

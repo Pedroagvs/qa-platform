@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 
 class TesteEntity {
   int id;
@@ -11,7 +11,7 @@ class TesteEntity {
   SituacaoTeste situacaoTeste;
   String descricao;
   String passos;
-  List<ArquivoEntity> arquivos;
+  List<FileDto> files;
   String observacoes;
   String loginTeste;
   String senhaTeste;
@@ -27,7 +27,7 @@ class TesteEntity {
     required this.situacaoTeste,
     required this.descricao,
     required this.passos,
-    required this.arquivos,
+    required this.files,
     required this.observacoes,
     required this.loginTeste,
     required this.senhaTeste,

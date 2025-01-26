@@ -1,10 +1,9 @@
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/controller/states/historico_state.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/historico_entity.dart';
 import 'package:quality_assurance_platform/externals/service/anexar_arquivos.dart';
 import 'package:quality_assurance_platform/externals/service/html_service.dart';
@@ -22,7 +21,7 @@ final idHistoricAtom = atom<int>(0);
 final idAplicacaoAtom = atom<int>(0);
 final versionAppOrBranchAtom = atom<String>('');
 final featuresTestadasAtom = atom<String>('');
-final fileAtom = atom<ArquivoEntity>(ArquivoDto.empty());
+final fileAtom = atom<FileDto>(FileDto.empty());
 final showFormHistoricAtom = atom<bool>(false);
 final isEditAtom = atom<bool>(false);
 final filterAtom = atom<String>('');
@@ -69,7 +68,7 @@ final updateIdAplicacao = atomAction1<int>(
   (set, newValue) => set(idAplicacaoAtom, newValue),
 );
 
-final updateFile = atomAction1<ArquivoEntity>(
+final updateFile = atomAction1<FileDto>(
   key: 'updateFile',
   (set, newFile) => set(fileAtom, newFile),
 );
@@ -98,7 +97,7 @@ final historicStateAtom =
 final getHistorics = atomAction2<int, int>(key: 'getHistorics',
     (set, offset, idAplicacao) async {
   set(historicStatusAtom, HistoricoStatus.loading);
-  final result = await historicUseCase.getHistoricos(
+  final result = await historicUseCase.getHistorics(
     offset: offset * 10,
     idAplicacao: idAplicacao,
   );
@@ -119,17 +118,17 @@ final createHistoric = atomAction1(key: 'createHistoric', (
     String versionAppOrBranch,
     String featuresTestadas,
     String aplicacao,
-    ArquivoEntity? arquivo
+    FileDto? fileDto
   ) record,
 ) async {
   set(historicStatusAtom, HistoricoStatus.loading);
-  final result = await historicUseCase.createHistorico(
+  final result = await historicUseCase.createHistoric(
     creatorName: record.$2,
     idAplicacao: record.$1,
     versionAppOrBranch: record.$3,
     featuresTestadas: record.$4,
     aplicacao: record.$5,
-    arquivoEntity: record.$6,
+    fileDto: record.$6,
   );
   if (result.failure != null) {
     set(msgAtom, result.failure?.errorMessage.toString());
@@ -161,7 +160,7 @@ final editHistoric = atomAction1<Map<String, dynamic>>(key: 'editHistoric', (
 final deleteHistoric = atomAction2<int, int>(key: 'deleteHistoric',
     (set, int idHistorico, int idAplicacao) async {
   set(historicStatusAtom, HistoricoStatus.loading);
-  final result = await historicUseCase.deleteHistorico(
+  final result = await historicUseCase.deleteHistoric(
     idHistorico: idHistorico,
     idAplicacao: idAplicacao,
   );
@@ -176,7 +175,7 @@ final deleteHistoric = atomAction2<int, int>(key: 'deleteHistoric',
 final deleteFileHistoric =
     atomAction1<int>(key: 'deleteFileHistoric', (set, int idHistorico) async {
   set(historicStatusAtom, HistoricoStatus.loading);
-  final result = await historicUseCase.deleteFileHistorico(
+  final result = await historicUseCase.deleteFileHistoric(
     idHistorico,
   );
   if (result.failure != null) {
@@ -192,7 +191,7 @@ final getReport = atomAction1<int>((set, idHistorico) {});
 final getFileHistoric = atomAction3<int, int, String>(key: 'getFileHistoric',
     (set, int idHistorico, int idArquivo, String nameFile) async {
   set(historicStatusAtom, HistoricoStatus.loadingDownload);
-  final result = await historicUseCase.downloadFileHistorico(
+  final result = await historicUseCase.downloadFileHistoric(
     idHistorico: idHistorico,
     idArquivo: idArquivo,
   );
@@ -209,13 +208,12 @@ final getFileHistoric = atomAction3<int, int, String>(key: 'getFileHistoric',
   }
 });
 
-final sendFileHistoric =
-    atomAction2<int, ArquivoEntity>(key: 'sendFileHistoric',
-        (set, int idHistorico, ArquivoEntity arquivo) async {
+final sendFileHistoric = atomAction2<int, FileDto>(key: 'sendFileHistoric',
+    (set, int idHistorico, FileDto fileDto) async {
   set(historicStatusAtom, HistoricoStatus.loading);
-  final result = await historicUseCase.uploadFileHistorico(
+  final result = await historicUseCase.uploadFileHistoric(
     idHistorico,
-    arquivo,
+    fileDto,
   );
   if (result.failure != null) {
     set(msgAtom, result.failure?.errorMessage.toString());
@@ -233,10 +231,11 @@ final getFile = atomAction((set) async {
       );
   set(
     fileAtom,
-    ArquivoEntity(
+    FileDto(
       path: map['path'] ?? '',
-      nome: map['nome'] ?? '${DateTime.now().millisecond}',
+      name: map['nome'] ?? '${DateTime.now().millisecond}',
       bytes: map['bytes'],
+      id: -1,
     ),
   );
 });
@@ -271,7 +270,7 @@ final historicGenericSelector = selector(key: 'historicGenericSelector', (get) {
     source: source,
     feature: features,
     dataCadastro: '',
-    arquivoEntity: file,
+    fileDto: file,
   );
 });
 

@@ -15,9 +15,14 @@ void injectDashboard(GetIt getIt) {
     ..registerLazySingleton<DashboardUseCase>(
       () => DashboardService(dashboardGateway: getIt()),
     )
+    ..registerLazySingleton<DashboardHandler>(
+      () => DashboardHandler(
+        read: GetDashboardHandler(dashboardUseCase: getIt()),
+      ),
+    )
     ..registerLazySingleton<DashboardController>(
       () => DashboardController(
-        dashBoardUseCase: getIt(),
+        dashboardHandler: getIt(),
       ),
     );
 }

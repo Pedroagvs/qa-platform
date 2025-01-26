@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 
 class HistoricEntity {
   int? idHistorico;
@@ -10,7 +10,7 @@ class HistoricEntity {
   int closedTickets;
   int openedTickets;
   bool closed;
-  ArquivoEntity? arquivoEntity;
+  FileDto? fileDto;
   HistoricEntity({
     required this.creator,
     required this.source,
@@ -20,6 +20,6 @@ class HistoricEntity {
     this.openedTickets = 0,
     this.closedTickets = 0,
     required this.dataCadastro,
-    this.arquivoEntity,
+    this.fileDto,
   });
 }

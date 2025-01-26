@@ -5,7 +5,7 @@ import 'package:back_end/app/api/api.dart';
 import 'package:back_end/app/domain/exceptions/common/common_exceptions.dart';
 import 'package:back_end/server/server.dart';
 import 'package:shelf/shelf.dart';
-import 'package:shelf_multipart/form_data.dart';
+import 'package:shelf_multipart/shelf_multipart.dart';
 import 'package:shelf_router/shelf_router.dart';
 
 class ShelfAdapter {
@@ -34,7 +34,7 @@ class ShelfAdapter {
         router.add(verb, route.replaceAll(' ', '') + path,
             (Request request) async {
           late final Map<String, dynamic> body;
-          if (request.isMultipartForm) {
+          if (MultipartRequest.of(request) != null) {
             body = {'formdata': await getParamsMultPartFile(request)};
           } else {
             if (request.requestedUri.queryParameters.isNotEmpty) {
@@ -66,23 +66,59 @@ Future<Map<String, Map<String, String>>> getParamsMultPartFile(
     'dados': {},
     'arquivos': {},
   };
-  await for (final formData in request.multipartFormData) {
-    if (formData.name.contains('arquivo')) {
-      if (formData.filename == null) {
-        throw Failure('Arquivo sem nome', StackTrace.current);
+
+  final multipart = request.multipart();
+  if (multipart != null) {
+    await for (final part in multipart.parts) {
+      final contentDisposition = part.headers['content-disposition'];
+
+      final partName = _getPartNameFromContentDisposition(contentDisposition);
+
+      if (contentDisposition != null &&
+          contentDisposition.contains('filename')) {
+        final bytes = await part.readBytes();
+        final filename = _getFilenameFromContentDisposition(contentDisposition);
+
+        params['arquivos']!.addEntries(
+          {
+            filename: jsonEncode(bytes),
+          }.entries,
+        );
+      } else {
+        // Para outros campos de dados
+        final content = await part.readString();
+        params['dados']!.addEntries(
+          {
+            partName: content,
+          }.entries,
+        );
       }
-      params['arquivos']!.addEntries(
-        {
-          formData.filename!: jsonEncode(await formData.part.readBytes()),
-        }.entries,
-      );
-    } else {
-      params['dados']!.addEntries(
-        {formData.name: await formData.part.readString()}.entries,
-      );
     }
+  } else {
+    throw Failure('Request não é do tipo multipart', StackTrace.current);
   }
+
   return params;
+}
+
+/// Função auxiliar para extrair o nome da parte do cabeçalho `content-disposition`.
+String _getPartNameFromContentDisposition(String? contentDisposition) {
+  final dispositionRegex = RegExp('form-data; name="([^"]+)"');
+  final match = dispositionRegex.firstMatch(contentDisposition ?? '');
+  if (match != null && match.groupCount > 0) {
+    return match.group(1)!;
+  }
+  throw Failure('Nome da parte não encontrado', StackTrace.current);
+}
+
+/// Função auxiliar para extrair o nome do arquivo do cabeçalho `content-disposition`.
+String _getFilenameFromContentDisposition(String contentDisposition) {
+  final filenameRegex = RegExp('filename="([^"]+)"');
+  final match = filenameRegex.firstMatch(contentDisposition);
+  if (match != null && match.groupCount > 0) {
+    return match.group(1)!;
+  }
+  throw Failure('Nome do arquivo não encontrado', StackTrace.current);
 }
 
 Response getResponse(ResponseHandler responseHandler) {

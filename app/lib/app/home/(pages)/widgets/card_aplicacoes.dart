@@ -1,8 +1,8 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/atoms/suites_atom.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/application_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';

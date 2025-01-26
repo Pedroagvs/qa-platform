@@ -1,6 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/home/controller/states/home_state.dart';
 import 'package:quality_assurance_platform/app/login/controller/atom/login_atom.dart';
 import 'package:quality_assurance_platform/core/common/domain/usecases/interface/users_usecase.dart';

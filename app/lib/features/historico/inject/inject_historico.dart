@@ -10,7 +10,7 @@ void initInjectHistoricoDosGruposDeTestesPorAplicacao(GetIt getIt) {
   getIt
     ..registerLazySingleton<HistoricoDataSource>(
       () => HistoricoDataSourceImp(
-        unoClient: getIt(),
+        client: getIt(),
       ),
     )
     ..registerLazySingleton<HistoricoRepository>(

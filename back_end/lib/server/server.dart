@@ -12,7 +12,9 @@ import 'package:shelf_static/shelf_static.dart';
 part 'response/response_json.dart';
 
 class Server {
-  static Future<HttpServer> bootStrap(List<Controller> controllers) async {
+  static Future<HttpServer> bootStrap(
+    List<Controller> controllers,
+  ) async {
     final staticHandler = createStaticHandler(
       '${Directory.current.path}/app/build/web',
       serveFilesOutsidePath: true,

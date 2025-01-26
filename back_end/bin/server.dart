@@ -8,7 +8,6 @@ import 'package:back_end/server/server.dart';
 void main(List<String> arguments) async {
   await injectInit();
   final server = await init();
-
   log(name: 'Server', 'http://${server.address.host}:${server.port}/');
   // withHotreload(init);
 }

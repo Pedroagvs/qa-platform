@@ -1,21 +1,21 @@
 import 'package:back_end/app/api/api.dart';
-import 'package:back_end/app/api/dto/aplicacao_dto.dart';
+import 'package:back_end/app/api/dto/aplication_dto.dart';
 import 'package:back_end/app/data/data.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class AplicacaoServiceMock extends Mock implements AplicacaoService {}
+class AplicationServiceMock extends Mock implements AplicationService {}
 
-class AplicacaoGatewayMock extends Mock implements AplicacaoGateway {}
+class AplicationGatewayMock extends Mock implements AplicationGateway {}
 
 void main() {
-  final mockAplicacaoService = AplicacaoServiceMock();
-  final mockAplicacaoGateway = AplicacaoGatewayMock();
-  final aplicacaoHandler = AplicacaoHandler(
-    create: PostAplicacaoHandler(aplicacaoUseCase: mockAplicacaoService),
-    delete: DeleteAplicacoesHandler(aplicacaoUseCase: mockAplicacaoService),
-    read: GetAplicacoesHandler(aplicacaoUseCase: mockAplicacaoService),
-    update: PutAplicacaoHandler(aplicacaoUseCase: mockAplicacaoService),
+  final mockAplicacaoService = AplicationServiceMock();
+  final mockAplicacaoGateway = AplicationGatewayMock();
+  final aplicacaoHandler = AplicationHandler(
+    create: CreateAplicationHandler(aplicationUseCase: mockAplicacaoService),
+    delete: DeleteAplicationHandler(aplicationUseCase: mockAplicacaoService),
+    read: GetApplicationsHandler(aplicacaoUseCase: mockAplicacaoService),
+    update: UpdateAplicationHandler(aplicationUseCase: mockAplicacaoService),
   );
   group('Teste do AplicacaoHandler', () {
     final requestParams = RequestParams(body: {'titulo': '', 'plataforma': ''});
@@ -29,15 +29,15 @@ void main() {
       final requestParams = RequestParams(body: null);
 
       when(() => mockAplicacaoGateway.get())
-          .thenAnswer((_) async => <AplicacaoDto>[]);
+          .thenAnswer((_) async => <AplicationDto>[]);
       when(() => mockAplicacaoService.get())
-          .thenAnswer((_) async => <AplicacaoDto>[]);
+          .thenAnswer((_) async => <AplicationDto>[]);
 
       final responseHandler = await aplicacaoHandler.read(
         requestParams: requestParams,
       );
       expect(responseHandler.statusHandler, StatusHandler.ok);
-      expect(responseHandler.body, isA<List<AplicacaoDto>>());
+      expect(responseHandler.body, isA<List<AplicationDto>>());
     });
     test('Espero atualizar uma Aplicação', () async {
       final requestParams = RequestParams(

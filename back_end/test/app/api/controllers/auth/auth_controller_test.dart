@@ -7,18 +7,33 @@ class AuthServiceMock extends Mock implements AuthService {}
 
 class AuthHandlerMock extends Mock implements AuthHandler {}
 
+class LoginHandlerMock extends Mock implements LoginHandler {}
+
+class ChangePasswordHandlerMock extends Mock implements ChangePasswordHandler {}
+
+class AuthControllerMock extends Mock implements AuthController {}
+
 void main() {
-  final controller = AuthController(
-    authUseCase: AuthServiceMock(),
-    authHandler: AuthHandlerMock(),
-  );
+  late final AuthController controller;
+  setUpAll(() {
+    controller = AuthControllerMock();
+    when(
+      () => controller.handler,
+    ).thenReturn({
+      'POST': LoginHandlerMock(),
+      'PUT /changePassword': ChangePasswordHandlerMock(),
+    });
+    when(
+      () => controller.route,
+    ).thenReturn('/auth');
+  });
 
   group('Autenticacao ->', () {
     test('AuthController deve conter /auth', () {
       expect(controller.route, '/auth');
     });
     test('AuthController deve conter uma key POST para loginHandler', () {
-      expect(controller.handler['POST'], isA<AuthHandler>());
+      expect(controller.handler['POST'], isA<LoginHandler>());
     });
     test('AuthController deve conter uma key PUT para loginHandler', () {
       expect(

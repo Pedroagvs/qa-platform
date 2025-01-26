@@ -1,8 +1,8 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
-import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/bar_info_testes.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/card_teste.dart';
 import 'package:quality_assurance_platform/app/testes/(pages)/widgets/filtro_tickets_status.dart';

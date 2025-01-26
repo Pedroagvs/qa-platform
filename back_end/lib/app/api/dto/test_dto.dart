@@ -1,6 +1,6 @@
 import 'package:back_end/app/api/dto/arquivo_dto.dart';
 
-class TesteDto {
+class TestDto {
   int? id;
   String criador;
   String responsavel;
@@ -17,7 +17,7 @@ class TesteDto {
   String devolutiva;
   String resultadoEsperado;
   bool fechado;
-  TesteDto({
+  TestDto({
     this.id,
     required this.criador,
     required this.responsavel,
@@ -57,15 +57,17 @@ class TesteDto {
     };
   }
 
-  factory TesteDto.fromJson(Map<String, dynamic> map) {
-    return TesteDto(
+  factory TestDto.fromJson(Map<String, dynamic> map) {
+    return TestDto(
       id: map['id'] != null ? int.parse(map['id'] as String) : null,
       criador: map['criador'] ?? '',
       responsavel: map['responsavel'] ?? '',
       tester: map['tester'] ?? '',
-      tag: getTag(map['tag']),
+      tag: map['tag'] != null ? getTag(map['tag']) : Tag.melhoria,
       feature: map['feature'] ?? '',
-      situacao: getSituacao(map['situacao']),
+      situacao: map['situacao'] != null
+          ? getSituacao(map['situacao'])
+          : Situacao.pendente,
       descricao: map['descricao'] ?? '',
       passos: map['passos'] ?? '',
       resultadoEsperado: map['resultadoEsperado'] ?? '',

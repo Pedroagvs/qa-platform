@@ -1,4 +1,4 @@
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
 
 class TesteDto extends TesteEntity {
@@ -10,7 +10,7 @@ class TesteDto extends TesteEntity {
     required super.situacaoTeste,
     required super.descricao,
     required super.passos,
-    required super.arquivos,
+    required super.files,
     required super.observacoes,
     required super.loginTeste,
     required super.senhaTeste,
@@ -30,16 +30,8 @@ class TesteDto extends TesteEntity {
       situacaoTeste: TesteEntity.setSituacao(json['situacao'] as String),
       descricao: json['descricao'],
       passos: json['passos'],
-      arquivos: json['arquivos'] != null
-          ? (json['arquivos'] as List)
-              .map(
-                (e) => ArquivoEntity(
-                  id: e['id'],
-                  path: '',
-                  nome: e['nome'],
-                ),
-              )
-              .toList()
+      files: json['arquivos'] != null
+          ? (json['arquivos'] as List).map((e) => FileDto.fromJson(e)).toList()
           : [],
       observacoes: json['observacoes'],
       loginTeste: json['usuario'],
@@ -61,7 +53,7 @@ class TesteDto extends TesteEntity {
       situacaoTeste: SituacaoTeste.pendente,
       descricao: '',
       passos: '',
-      arquivos: [],
+      files: [],
       observacoes: '',
       loginTeste: '',
       resultadoEsperado: '',

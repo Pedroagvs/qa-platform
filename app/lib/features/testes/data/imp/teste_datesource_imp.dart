@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/client/status_code.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/teste_dto.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/testes/data/interface/teste_datasource.dart';
@@ -39,12 +39,12 @@ class TesteDataSourceImp implements TesteDataSource {
         'resultadoEsperado': testeEntity.resultadoEsperado,
         'idHistorico': idHistorico,
       };
-      if (testeEntity.arquivos.isNotEmpty) {
-        for (var i = 0; i < testeEntity.arquivos.length; i++) {
+      if (testeEntity.files.isNotEmpty) {
+        for (var i = 0; i < testeEntity.files.length; i++) {
           formaData.addBytes(
             'arquivo-$i',
-            testeEntity.arquivos[i].bytes!,
-            filename: testeEntity.arquivos[i].nome,
+            testeEntity.files[i].bytes!,
+            filename: testeEntity.files[i].name,
             contentType: 'application/octet-stream',
           );
         }
@@ -53,12 +53,7 @@ class TesteDataSourceImp implements TesteDataSource {
 
       final response = await unoClient.post(
         path: '/teste',
-        data: testeEntity.arquivos.isNotEmpty ? formaData : jsonEncode(data),
-        headers: {
-          'Content-type': testeEntity.arquivos.isNotEmpty
-              ? 'multipart/form-data'
-              : 'aplication/json',
-        },
+        data: testeEntity.files.isNotEmpty ? formaData : jsonEncode(data),
         onProgress: onProgress,
       );
       if (response.data != null) {
@@ -87,7 +82,7 @@ class TesteDataSourceImp implements TesteDataSource {
         onProgress: onProgress,
       );
       if (response.data != null) {
-        return (response.data as List<dynamic>)
+        return (response.data as List)
             .map((e) => TesteDto.fromJson(e))
             .toList();
       }
@@ -193,26 +188,23 @@ class TesteDataSourceImp implements TesteDataSource {
   @override
   Future<bool> uploadArquivos({
     required int idTeste,
-    required List<ArquivoEntity> arquivos,
+    required List<FileDto> files,
     required void Function(int, int)? onProgress,
   }) async {
     try {
       final formData = FormData()
         ..add('dados', jsonEncode({'idTeste': idTeste}));
-      for (var i = 0; i < arquivos.length; i++) {
+      for (final file in files) {
         formData.addBytes(
-          'arquivo-$i',
-          arquivos[i].bytes!,
-          filename: arquivos[i].nome,
-          contentType: 'application/octet-stream',
+          DateTime.now().millisecondsSinceEpoch.toString(),
+          file.bytes!,
+          filename: file.name,
         );
       }
+
       final response = await unoClient.post(
         path: '/teste/arquivos',
         data: formData,
-        headers: {
-          'Content-type': 'multipart/form-data',
-        },
         onProgress: onProgress,
       );
       if (response.data != null) {

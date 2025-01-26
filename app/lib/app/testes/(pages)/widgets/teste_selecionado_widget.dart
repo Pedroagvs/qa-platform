@@ -3,7 +3,9 @@ import 'dart:typed_data';
 import 'package:asp/asp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/widgets/file_widget.dart';
+import 'package:quality_assurance_platform/app/testes/(pages)/widgets/list_arquivos_teste.dart';
 import 'package:quality_assurance_platform/app/testes/controller/atom/teste_atom.dart';
 import 'package:quality_assurance_platform/app/testes/controller/states/testes_state.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
@@ -357,7 +359,7 @@ class _TesteSelecionadoPageState extends State<TesteSelecionadoPage>
             ),
           ),
           Visibility(
-            visible: testeState.selectedTest.arquivos.isNotEmpty,
+            visible: testeState.selectedTest.files.isNotEmpty,
             child: SizedBox(
               width: MediaQuery.sizeOf(context).width,
               child: ScrollConfiguration(
@@ -376,119 +378,9 @@ class _TesteSelecionadoPageState extends State<TesteSelecionadoPage>
                       padding: EdgeInsets.symmetric(vertical: 20),
                       child: Text('Arquivos'),
                     ),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      runAlignment: WrapAlignment.center,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      runSpacing: 20,
-                      spacing: 20,
-                      children: testeState.selectedTest.arquivos
-                          .map(
-                            (f) => Container(
-                              constraints: const BoxConstraints(
-                                maxHeight: 350,
-                                maxWidth: 250,
-                              ),
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Visibility(
-                                            visible:
-                                                !testeState.selectedTest.closed,
-                                            child: IconButton(
-                                              onPressed: () => deleteFile(
-                                                testeState.selectedTest.id,
-                                                f.id,
-                                              ),
-                                              icon: const Icon(
-                                                Icons.close,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Flexible(
-                                        flex: 3,
-                                        child: Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 5,
-                                              horizontal: 3,
-                                            ),
-                                            child: Visibility(
-                                              visible: testeState
-                                                          .statusTestes ==
-                                                      StatusTestes
-                                                          .loadingDownloadFile &&
-                                                  f.bytes == null,
-                                              replacement: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: f.bytes != null
-                                                    ? Image.memory(
-                                                        f.bytes ??
-                                                            Uint8List.fromList(
-                                                              [],
-                                                            ),
-                                                      )
-                                                    : const Icon(
-                                                        Icons
-                                                            .file_present_rounded,
-                                                        size: 48,
-                                                      ),
-                                              ),
-                                              child:
-                                                  const CircularProgressIndicator(),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Text(
-                                            f.nome,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                      Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            vertical: 12,
-                                          ),
-                                          child: Visibility(
-                                            visible: f.bytes != null,
-                                            child: OutlinedButton.icon(
-                                              label: const Text('Baixar'),
-                                              icon: const Icon(
-                                                Icons.download,
-                                              ),
-                                              onPressed: () => downloadFile(
-                                                f,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                    const Divider(
-                      height: 20,
+                    ListArquivosTeste(
+                      files: testeState.selectedTest.files,
+                      testId: testeState.selectedTest.id,
                     ),
                   ],
                 ),
@@ -507,14 +399,14 @@ class _TesteSelecionadoPageState extends State<TesteSelecionadoPage>
                 Visibility(
                   visible: testeState.isEditing,
                   replacement: Visibility(
-                    visible: testeState.selectedTest.arquivos.isNotEmpty,
+                    visible: testeState.selectedTest.files.isNotEmpty,
                     child: ElevatedButton(
                       onPressed: testeState.selectedTest.closed ||
                               testeState.statusTestes ==
                                   StatusTestes.baixandoArquivos
                           ? null
                           : () {
-                              if (testeState.selectedTest.arquivos.isEmpty) {
+                              if (testeState.selectedTest.files.isEmpty) {
                                 toastErrorMessage(
                                   context: context,
                                   title: 'Baixar Arquivos',

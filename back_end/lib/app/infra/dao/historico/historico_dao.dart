@@ -1,8 +1,8 @@
 part of infra;
 
-class HistoricoDAO implements HistoricGateway {
+class HistoricDAO implements HistoricGateway {
   final Connection connection;
-  HistoricoDAO({
+  HistoricDAO({
     required this.connection,
   });
   @override
@@ -86,7 +86,7 @@ class HistoricoDAO implements HistoricGateway {
   }
 
   @override
-  Future<List<HistoricoDto>> get({
+  Future<List<HistoricDto>> get({
     required RequestParams requestParams,
   }) async {
     final idAplicacao = requestParams.body?['idAplicacao'] is String
@@ -129,7 +129,7 @@ class HistoricoDAO implements HistoricGateway {
           'offset': offset,
         },
       );
-      return row.map(HistoricoDto.fromJson).toList();
+      return row.map(HistoricDto.fromJson).toList();
     } catch (e) {
       rethrow;
     }

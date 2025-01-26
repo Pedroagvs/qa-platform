@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/data/dtos/teste_dto.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/testes/data/interface/teste_datasource.dart';
@@ -112,7 +112,7 @@ class TesteRepositoryImp implements TesteRepository {
   @override
   Future<({Failure? failure, bool? success})> uploadArquivos({
     required int idTeste,
-    required List<ArquivoEntity> arquivos,
+    required List<FileDto> files,
     required void Function(int, int)? onProgress,
   }) async {
     try {
@@ -120,7 +120,7 @@ class TesteRepositoryImp implements TesteRepository {
         failure: null,
         success: await testeDataSource.uploadArquivos(
           idTeste: idTeste,
-          arquivos: arquivos,
+          files: files,
           onProgress: onProgress,
         )
       );

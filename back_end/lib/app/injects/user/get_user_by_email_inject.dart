@@ -16,9 +16,16 @@ void injectUser(GetIt getIt) {
         userGateway: getIt(),
       ),
     )
+    ..registerLazySingleton<UserHandler>(
+      () => UserHandler(
+        getUserByEmail: GetUserByEmailHandler(userUseCase: getIt()),
+        getUsers: GetAllUsersHandler(userUseCase: getIt()),
+        updateThumbnail: SetThumbnailUserHandler(userUseCase: getIt()),
+      ),
+    )
     ..registerLazySingleton<UserController>(
       () => UserController(
-        userUseCase: getIt(),
+        userHandler: getIt(),
       ),
     );
 }

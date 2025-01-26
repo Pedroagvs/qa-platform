@@ -1,7 +1,7 @@
 part of domain;
 
-abstract class TesteUseCase {
-  Future<List<TesteDto>> get({required RequestParams requestParams});
+abstract class TestUseCase {
+  Future<List<TestDto>> get({required RequestParams requestParams});
   Future<bool> create({required RequestParams requestParams});
   Future<bool> delete({required RequestParams requestParams});
   Future<bool> update({required RequestParams requestParams});

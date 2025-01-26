@@ -1,5 +1,16 @@
 part of api;
 
+class UserHandler {
+  final Handler updateThumbnail;
+  final Handler getUserByEmail;
+  final Handler getUsers;
+  UserHandler({
+    required this.getUserByEmail,
+    required this.getUsers,
+    required this.updateThumbnail,
+  });
+}
+
 class SetThumbnailUserHandler implements Handler {
   final UserUseCase userUseCase;
   SetThumbnailUserHandler({required this.userUseCase});

@@ -1,9 +1,9 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
-import 'package:quality_assurance_platform/app/common/shared_preferences_atom.dart';
-import 'package:quality_assurance_platform/app/common/user_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/shared_preferences_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/user_atom.dart';
 import 'package:quality_assurance_platform/app/historico/(pages)/widgets/card_historico_widget.dart';
 import 'package:quality_assurance_platform/app/historico/(pages)/widgets/form_historic_widget.dart';
 import 'package:quality_assurance_platform/app/historico/controller/atom/historico_atom.dart';

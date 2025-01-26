@@ -1,8 +1,8 @@
-class AplicacaoDto {
+class AplicationDto {
   int? id;
   final String title;
   final Plataforma plataforma;
-  AplicacaoDto({
+  AplicationDto({
     this.id,
     required this.title,
     required this.plataforma,
@@ -16,8 +16,8 @@ class AplicacaoDto {
     };
   }
 
-  factory AplicacaoDto.fromJson(Map<String, dynamic> map) {
-    return AplicacaoDto(
+  factory AplicationDto.fromJson(Map<String, dynamic> map) {
+    return AplicationDto(
       id: map['id'] != null ? int.parse(map['id']) : null,
       title: map['titulo'] as String,
       plataforma: getPlataforma(map['plataforma'] as String),

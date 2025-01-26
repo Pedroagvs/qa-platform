@@ -5,30 +5,30 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:quality_assurance_platform/core/client/client.dart';
 import 'package:quality_assurance_platform/core/client/status_code.dart';
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/failure/failure.dart';
 import 'package:quality_assurance_platform/features/historico/data/datasource/interface/historico_datasource.dart';
 import 'package:quality_assurance_platform/features/historico/data/dto/historico_dto.dart';
 import 'package:uno/uno.dart';
 
 class HistoricoDataSourceImp implements HistoricoDataSource {
-  final Client unoClient;
+  final Client client;
   HistoricoDataSourceImp({
-    required this.unoClient,
+    required this.client,
   });
   @override
-  Future<String> createHistorico({
+  Future<String> createHistoric({
     required int idAplicacao,
     required String creatorName,
     required String versionAppOrBranch,
     required String featuresTestadas,
     required String aplicacao,
-    ArquivoEntity? arquivoEntity,
+    FileDto? fileDto,
   }) async {
     var data = const <String, dynamic>{};
     final formaData = FormData();
     try {
-      if (arquivoEntity != null && arquivoEntity.bytes != null) {
+      if (fileDto != null && fileDto.bytes != null) {
         formaData
           ..add(
             'dados',
@@ -37,13 +37,13 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
               'criador': creatorName,
               'descricao': featuresTestadas,
               'fonte': versionAppOrBranch,
-              'nomeArquivo': arquivoEntity.nome,
+              'nomeArquivo': fileDto.name,
             }),
           )
           ..addBytes(
             'arquivo',
-            arquivoEntity.bytes!,
-            filename: arquivoEntity.nome,
+            fileDto.bytes!,
+            filename: fileDto.name,
             contentType: 'application/octet-stream',
           );
       } else {
@@ -55,16 +55,9 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
         };
       }
 
-      final response = await unoClient.post(
+      final response = await client.post(
         path: '/historico',
-        data: arquivoEntity != null && arquivoEntity.bytes != null
-            ? formaData
-            : data,
-        headers: {
-          'Content-type': arquivoEntity != null && arquivoEntity.bytes != null
-              ? 'multipart/form-data'
-              : 'aplication/json',
-        },
+        data: fileDto != null && fileDto.bytes != null ? formaData : data,
       );
       switch (response.status) {
         case StatusCode.ok:
@@ -91,12 +84,12 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
   }
 
   @override
-  Future<String> deleteHistorico({
+  Future<String> deleteHistoric({
     required int idHistorico,
     required int idAplicacao,
   }) async {
     try {
-      final response = await unoClient.delete(
+      final response = await client.delete(
         path: '/historico',
         data: {
           'idHistorico': idHistorico,
@@ -128,12 +121,12 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
   }
 
   @override
-  Future<List<HistoricoDto>> getHistoricos({
+  Future<List<HistoricoDto>> getHistorics({
     required int offset,
     required int idAplicacao,
   }) async {
     try {
-      final response = await unoClient.get(
+      final response = await client.get(
         path: '/historico',
         params: {
           'idAplicacao': idAplicacao.toString(),
@@ -167,9 +160,9 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
   }
 
   @override
-  Future<String> deleteFileHistorico(int idHistorico) async {
+  Future<String> deleteFileHistoric(int idHistorico) async {
     try {
-      final response = await unoClient.delete(
+      final response = await client.delete(
         path: '/historico/deleteFile',
         data: {
           'idHistorico': idHistorico,
@@ -200,12 +193,12 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
   }
 
   @override
-  Future<Uint8List> donwloadFileHistorico({
+  Future<Uint8List> donwloadFileHistoric({
     required int idArquivo,
     required int idHistorico,
   }) async {
     try {
-      final response = await unoClient.get(
+      final response = await client.get(
         path: '/historico/downloadFile',
         params: {
           'idHistorico': idHistorico.toString(),
@@ -237,24 +230,21 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
   }
 
   @override
-  Future<String> uploadFileHistorico(
+  Future<String> uploadFileHistoric(
     int idHistorico,
-    ArquivoEntity arquivoEntity,
+    FileDto fileDto,
   ) async {
     try {
       final formData = FormData()
         ..add('dados', jsonEncode({'idHistorico': idHistorico}))
         ..addFile(
           'arquivo',
-          arquivoEntity.path,
-          filename: arquivoEntity.nome,
+          fileDto.path,
+          filename: fileDto.name,
         );
-      final response = await unoClient.post(
+      final response = await client.post(
         path: '/historico/uploadFile',
         data: formData,
-        headers: {
-          'Content-type': 'multipart/form-data',
-        },
       );
       switch (response.status) {
         case StatusCode.ok:
@@ -283,7 +273,7 @@ class HistoricoDataSourceImp implements HistoricoDataSource {
   @override
   Future<String> update(Map<String, dynamic> mapUpdate) async {
     try {
-      final response = await unoClient.put(
+      final response = await client.put(
         path: '/historico',
         data: mapUpdate,
       );

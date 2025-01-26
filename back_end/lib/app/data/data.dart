@@ -4,9 +4,9 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:back_end/app/api/api.dart';
-import 'package:back_end/app/api/dto/aplicacao_dto.dart';
-import 'package:back_end/app/api/dto/historico_dto.dart';
-import 'package:back_end/app/api/dto/teste_dto.dart';
+import 'package:back_end/app/api/dto/aplication_dto.dart';
+import 'package:back_end/app/api/dto/historic_dto.dart';
+import 'package:back_end/app/api/dto/test_dto.dart';
 import 'package:back_end/app/api/dto/user_dto.dart';
 import 'package:back_end/app/domain/domain.dart';
 import 'package:back_end/app/domain/exceptions/register/register_exceptions.dart';

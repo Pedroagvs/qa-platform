@@ -1,4 +1,4 @@
-import 'package:quality_assurance_platform/core/common/domain/entities/arquivo_entity.dart';
+import 'package:quality_assurance_platform/core/common/data/dtos/arquivo_dto.dart';
 import 'package:quality_assurance_platform/core/common/domain/entities/test_entity.dart';
 
 class TestesState {
@@ -7,7 +7,7 @@ class TestesState {
   final List<TesteEntity> filteredTests;
   final TesteEntity selectedTest;
   final SituacaoTeste selectedSituation;
-  final List<ArquivoEntity> cacheFiles;
+  final List<FileDto> cacheFiles;
   final bool isEditing;
   final bool showFormSelectedTest;
   final bool showForm;

@@ -1,6 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quality_assurance_platform/app/common/message_atom.dart';
+import 'package:quality_assurance_platform/app/common/atoms/message_atom.dart';
 import 'package:quality_assurance_platform/features/login/domain/usecases/interface/auth_usecase.dart';
 
 final createAccountAtom =

@@ -48,9 +48,6 @@ class UsersDataSourceImp implements UsersDataSource {
       final response = await unoClient.put(
         path: '/user/thumbnail',
         data: formData,
-        headers: {
-          'Content-type': 'multipart/form-data',
-        },
       );
 
       if (response.data != null) {

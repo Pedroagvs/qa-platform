@@ -1,8 +1,8 @@
 part of infra;
 
-class TesteDAO implements TesteGateWay {
+class TestDAO implements TestGateWay {
   final Connection connection;
-  TesteDAO({required this.connection});
+  TestDAO({required this.connection});
   @override
   Future<bool> create({required RequestParams requestParams}) async {
     try {
@@ -78,7 +78,7 @@ class TesteDAO implements TesteGateWay {
   }
 
   @override
-  Future<List<TesteDto>> get({required RequestParams requestParams}) async {
+  Future<List<TestDto>> get({required RequestParams requestParams}) async {
     try {
       final idHistorico = requestParams.body?['idHistorico'] is String
           ? int.parse(requestParams.body?['idHistorico'])
@@ -121,7 +121,7 @@ class TesteDAO implements TesteGateWay {
         'idHistorico': idHistorico,
       });
 
-      return row.map((e) => TesteDto.fromJson(e)).toList();
+      return row.map((e) => TestDto.fromJson(e)).toList();
     } catch (e) {
       rethrow;
     }

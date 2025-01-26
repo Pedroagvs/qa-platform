@@ -1,13 +1,32 @@
 part of api;
 
-class GetTesteHandler implements Handler {
-  final TesteUseCase testeUseCase;
-  GetTesteHandler({required this.testeUseCase});
+class TesteHandler {
+  final Handler create;
+  final Handler update;
+  final Handler delete;
+  final Handler read;
+  final Handler createFile;
+  final Handler getFile;
+  final Handler deleteFile;
+  TesteHandler({
+    required this.create,
+    required this.delete,
+    required this.read,
+    required this.update,
+    required this.createFile,
+    required this.getFile,
+    required this.deleteFile,
+  });
+}
+
+class GetTestHandler implements Handler {
+  final TestUseCase testUseCase;
+  GetTestHandler({required this.testUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result = await testeUseCase.get(requestParams: requestParams);
+      final result = await testUseCase.get(requestParams: requestParams);
       return ResponseHandler(
         statusHandler: StatusHandler.ok,
         body: result,
@@ -21,9 +40,9 @@ class GetTesteHandler implements Handler {
   }
 }
 
-class PostTesteHandler implements Handler {
-  final TesteUseCase testeUseCase;
-  PostTesteHandler({required this.testeUseCase});
+class CreateTestHandler implements Handler {
+  final TestUseCase testUseCase;
+  CreateTestHandler({required this.testUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
@@ -31,7 +50,7 @@ class PostTesteHandler implements Handler {
       if (requestParams.body == null || requestParams.body!.isEmpty) {
         throw FieldsIsEmpty();
       }
-      final result = await testeUseCase.create(requestParams: requestParams);
+      final result = await testUseCase.create(requestParams: requestParams);
       return ResponseHandler(
         statusHandler: result ? StatusHandler.ok : StatusHandler.internalError,
         body: result
@@ -52,9 +71,9 @@ class PostTesteHandler implements Handler {
   }
 }
 
-class PostEnviarArquivoTesteHandler implements Handler {
-  final TesteUseCase testeUseCase;
-  PostEnviarArquivoTesteHandler({required this.testeUseCase});
+class UploadFileTestHandler implements Handler {
+  final TestUseCase testUseCase;
+  UploadFileTestHandler({required this.testUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
@@ -63,7 +82,7 @@ class PostEnviarArquivoTesteHandler implements Handler {
         throw FieldsIsEmpty();
       }
 
-      final result = await testeUseCase.uploadFile(
+      final result = await testUseCase.uploadFile(
         requestParams: requestParams,
       );
 
@@ -87,9 +106,9 @@ class PostEnviarArquivoTesteHandler implements Handler {
   }
 }
 
-class GetBuscarArquivoTesteHandler implements Handler {
-  final TesteUseCase testeUseCase;
-  GetBuscarArquivoTesteHandler({required this.testeUseCase});
+class GetFilesTestHandler implements Handler {
+  final TestUseCase testUseCase;
+  GetFilesTestHandler({required this.testUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
@@ -97,7 +116,7 @@ class GetBuscarArquivoTesteHandler implements Handler {
       if (requestParams.body == null || requestParams.body!.isEmpty) {
         throw FieldsIsEmpty();
       }
-      final bytes = await testeUseCase.downloadFile(
+      final bytes = await testUseCase.downloadFile(
         requestParams: requestParams,
       );
       return ResponseHandler(
@@ -118,9 +137,9 @@ class GetBuscarArquivoTesteHandler implements Handler {
   }
 }
 
-class DeleteTesteHandler implements Handler {
-  final TesteUseCase testeUseCase;
-  DeleteTesteHandler({required this.testeUseCase});
+class DeleteTestHandler implements Handler {
+  final TestUseCase testUseCase;
+  DeleteTestHandler({required this.testUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
@@ -128,7 +147,7 @@ class DeleteTesteHandler implements Handler {
       if (requestParams.body == null || requestParams.body!.isEmpty) {
         throw FieldsIsEmpty();
       }
-      final result = await testeUseCase.delete(requestParams: requestParams);
+      final result = await testUseCase.delete(requestParams: requestParams);
       return ResponseHandler(
         statusHandler: result ? StatusHandler.ok : StatusHandler.badRequest,
         body: result
@@ -149,14 +168,14 @@ class DeleteTesteHandler implements Handler {
   }
 }
 
-class PutTesteHandler implements Handler {
-  final TesteUseCase testeUseCase;
-  PutTesteHandler({required this.testeUseCase});
+class UpdateTestHandler implements Handler {
+  final TestUseCase testUseCase;
+  UpdateTestHandler({required this.testUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result = await testeUseCase.update(requestParams: requestParams);
+      final result = await testUseCase.update(requestParams: requestParams);
       return ResponseHandler(
         statusHandler: result ? StatusHandler.ok : StatusHandler.badRequest,
         body: result
@@ -172,15 +191,14 @@ class PutTesteHandler implements Handler {
   }
 }
 
-class DeleteArquivoTesteHandler implements Handler {
-  final TesteUseCase testeUseCase;
-  DeleteArquivoTesteHandler({required this.testeUseCase});
+class DeleteFileTestHandler implements Handler {
+  final TestUseCase testUseCase;
+  DeleteFileTestHandler({required this.testUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
-      final result =
-          await testeUseCase.deleteFile(requestParams: requestParams);
+      final result = await testUseCase.deleteFile(requestParams: requestParams);
       return ResponseHandler(
         statusHandler: result ? StatusHandler.ok : StatusHandler.badRequest,
         body: result

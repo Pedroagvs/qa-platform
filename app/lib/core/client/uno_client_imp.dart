@@ -24,7 +24,7 @@ class ClientImp implements Client {
         path,
         onDownloadProgress: onProgress,
         data: data,
-        timeout: timeOut ?? const Duration(seconds: 10),
+        timeout: timeOut,
       );
     } on TimeoutException {
       throw Failure(
@@ -54,7 +54,7 @@ class ClientImp implements Client {
         path,
         params: params,
         onDownloadProgress: onProgress,
-        timeout: timeOut ?? const Duration(seconds: 10),
+        timeout: timeOut,
       );
     } on UnoError catch (e, s) {
       if (e.response != null) {
@@ -98,7 +98,7 @@ class ClientImp implements Client {
         data: data,
         headers: headers,
         onDownloadProgress: onProgress,
-        timeout: timeOut ?? const Duration(seconds: 10),
+        timeout: timeOut,
       );
     } on UnoError catch (e, s) {
       if (e.response != null) {
@@ -141,7 +141,7 @@ class ClientImp implements Client {
         path,
         data: data,
         onDownloadProgress: onProgress,
-        timeout: timeOut ?? const Duration(seconds: 10),
+        timeout: timeOut,
       );
     } on UnoError catch (e, s) {
       if (e.response != null) {

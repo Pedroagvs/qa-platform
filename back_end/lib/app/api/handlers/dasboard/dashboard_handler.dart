@@ -1,5 +1,12 @@
 part of api;
 
+class DashboardHandler {
+  final Handler read;
+  DashboardHandler({
+    required this.read,
+  });
+}
+
 class GetDashboardHandler implements Handler {
   final DashboardUseCase dashboardUseCase;
   GetDashboardHandler({required this.dashboardUseCase});

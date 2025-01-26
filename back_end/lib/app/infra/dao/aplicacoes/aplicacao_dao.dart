@@ -1,14 +1,12 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 part of infra;
 
-class AplicacaoDAO implements AplicacaoGateway {
+class AplicationDAO implements AplicationGateway {
   final Connection connection;
-  AplicacaoDAO({
+  AplicationDAO({
     required this.connection,
   });
   @override
-  Future<List<AplicacaoDto>> get() async {
+  Future<List<AplicationDto>> get() async {
     try {
       final row = await connection.query('''
             SELECT * FROM 
@@ -18,7 +16,7 @@ class AplicacaoDAO implements AplicacaoGateway {
             DESC
             ''');
 
-      return row.map(AplicacaoDto.fromJson).toList();
+      return row.map(AplicationDto.fromJson).toList();
     } catch (e) {
       rethrow;
     }

@@ -1,12 +1,12 @@
 part of api;
 
-class AplicacaoHandler {
+class AplicationHandler {
   final Handler read;
   final Handler create;
   final Handler delete;
   final Handler update;
 
-  AplicacaoHandler({
+  AplicationHandler({
     required this.create,
     required this.delete,
     required this.read,
@@ -14,9 +14,9 @@ class AplicacaoHandler {
   });
 }
 
-class GetAplicacoesHandler implements Handler {
-  final AplicacaoUseCase aplicacaoUseCase;
-  GetAplicacoesHandler({required this.aplicacaoUseCase});
+class GetApplicationsHandler implements Handler {
+  final AplicationUseCase aplicacaoUseCase;
+  GetApplicationsHandler({required this.aplicacaoUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
@@ -35,9 +35,9 @@ class GetAplicacoesHandler implements Handler {
   }
 }
 
-class PostAplicacaoHandler implements Handler {
-  final AplicacaoUseCase aplicacaoUseCase;
-  PostAplicacaoHandler({required this.aplicacaoUseCase});
+class CreateAplicationHandler implements Handler {
+  final AplicationUseCase aplicationUseCase;
+  CreateAplicationHandler({required this.aplicationUseCase});
 
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
@@ -51,7 +51,7 @@ class PostAplicacaoHandler implements Handler {
         throw FieldsIsEmpty();
       }
       final result =
-          await aplicacaoUseCase.create(requestParams: requestParams);
+          await aplicationUseCase.create(requestParams: requestParams);
 
       return ResponseHandler(
         statusHandler: result ? StatusHandler.ok : StatusHandler.internalError,
@@ -78,11 +78,10 @@ class PostAplicacaoHandler implements Handler {
   }
 }
 
-class DeleteAplicacoesHandler implements Handler {
-  final AplicacaoUseCase aplicacaoUseCase;
-
-  DeleteAplicacoesHandler({
-    required this.aplicacaoUseCase,
+class DeleteAplicationHandler implements Handler {
+  final AplicationUseCase aplicationUseCase;
+  DeleteAplicationHandler({
+    required this.aplicationUseCase,
   });
 
   @override
@@ -95,7 +94,7 @@ class DeleteAplicacoesHandler implements Handler {
         throw FieldsIsEmpty();
       }
       final result =
-          await aplicacaoUseCase.delete(requestParams: requestParams);
+          await aplicationUseCase.delete(requestParams: requestParams);
       return ResponseHandler(
         statusHandler: result ? StatusHandler.ok : StatusHandler.internalError,
         body: result
@@ -116,9 +115,9 @@ class DeleteAplicacoesHandler implements Handler {
   }
 }
 
-class PutAplicacaoHandler implements Handler {
-  final AplicacaoUseCase aplicacaoUseCase;
-  PutAplicacaoHandler({required this.aplicacaoUseCase});
+class UpdateAplicationHandler implements Handler {
+  final AplicationUseCase aplicationUseCase;
+  UpdateAplicationHandler({required this.aplicationUseCase});
   @override
   Future<ResponseHandler> call({required RequestParams requestParams}) async {
     try {
@@ -132,7 +131,7 @@ class PutAplicacaoHandler implements Handler {
         throw FieldsIsEmpty();
       }
       final result =
-          await aplicacaoUseCase.update(requestParams: requestParams);
+          await aplicationUseCase.update(requestParams: requestParams);
       return ResponseHandler(
         statusHandler: result ? StatusHandler.ok : StatusHandler.internalError,
         body: result
